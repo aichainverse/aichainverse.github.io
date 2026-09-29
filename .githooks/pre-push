@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Blocks pushes from this repo unless they go out as the aichainverse GitHub account
+# and every pushed commit is authored and committed by aichainverse.
+# Enabled via: git config core.hooksPath .githooks
+set -euo pipefail
+
+REQUIRED_LOGIN="aichainverse"
+REQUIRED_EMAIL="335422648+aichainverse@users.noreply.github.com"
+
+remote_name="$1"
+remote_url="$2"
+zero=0000000000000000000000000000000000000000
+
+fail() { echo "pre-push: $*" >&2; echo "pre-push: push blocked." >&2; exit 1; }
+
+# 1. The credential git will push with must belong to the required account.
+if [[ "$remote_url" == https://* ]]; then
+  token=$(printf 'url=%s\n\n' "$remote_url" | GIT_TERMINAL_PROMPT=0 git credential fill 2>/dev/null | sed -n 's/^password=//p')
+  [[ -n "$token" ]] || fail "no GitHub credential found for $remote_url (run: gh auth login, as $REQUIRED_LOGIN)"
+  login=$(curl -fsS -H "Authorization: Bearer $token" https://api.github.com/user 2>/dev/null \
+            | sed -n 's/^ *"login": *"\([^"]*\)".*/\1/p' | head -1) || true
+  unset token
+  [[ -n "$login" ]] || fail "could not verify the pushing account with GitHub"
+  [[ "$login" == "$REQUIRED_LOGIN" ]] || fail "pushing as '$login', must be '$REQUIRED_LOGIN'"
+else
+  fail "remote '$remote_name' is not https ($remote_url); use https://$REQUIRED_LOGIN@github.com/... so the account can be verified"
+fi
+
+# 2. Every commit being pushed must be authored and committed by the required identity.
+bad=""
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [[ "$local_sha" == "$zero" ]] && continue          # branch deletion
+  if [[ "$remote_sha" == "$zero" ]]; then
+    range=("$local_sha" --not --remotes="$remote_name")
+  else
+    range=("$remote_sha..$local_sha")
+  fi
+  while IFS=$'\t' read -r sha ae ce; do
+    [[ "$ae" == "$REQUIRED_EMAIL" && "$ce" == "$REQUIRED_EMAIL" ]] || bad+="  ${sha:0:9}  author=<$ae> committer=<$ce>"$'\n'
+  done < <(git log --format='%H%x09%ae%x09%ce' "${range[@]}")
+done
+
+if [[ -n "$bad" ]]; then
+  echo "pre-push: these commits are not from $REQUIRED_EMAIL:" >&2
+  printf '%s' "$bad" >&2
+  fail "fix with: git rebase -r <base> --exec 'git commit --amend --no-edit --reset-author'"
+fi

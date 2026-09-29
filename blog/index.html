@@ -1,0 +1,15 @@
+---
+title: Blog
+---
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>Blog</h1>
+    <div class="post-list">
+      {%- for post in site.posts %}
+      {% include post-card.html post=post %}
+      {%- else %}
+      <p class="muted">No posts yet.</p>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

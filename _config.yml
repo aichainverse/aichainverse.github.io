@@ -1,0 +1,66 @@
+title: AIChainverse
+tagline: Your Daily Dose of AI, Web3 & Data Science
+# Channel "about" line from YouTube, used for the meta description.
+description: >-
+  Welcome to AIChainverse – the infotainment channel where Web3,
+  cryptocurrency, blockchain, AI, AI agents, and data science meet.
+url: https://aichainverse.github.io
+baseurl: ""
+lang: en
+timezone: Asia/Karachi
+
+logo: /assets/img/logo.svg
+author:
+  name: Umer Majeed
+
+social:
+  name: AIChainverse
+  links:
+    - https://www.youtube.com/@AIchainVerse
+    - https://www.facebook.com/aichainverse
+    - https://github.com/aichainverse
+
+links:
+  youtube: https://www.youtube.com/@AIchainVerse
+  subscribe: https://www.youtube.com/@AIchainVerse?sub_confirmation=1
+  facebook: https://www.facebook.com/aichainverse
+  github: https://github.com/aichainverse
+
+permalink: /blog/:year/:month/:day/:title/
+
+# Long-form guides and tutorials live in _guides/ and publish at /guides/<file-name>/.
+collections:
+  guides:
+    output: true
+    permalink: /guides/:name/
+    sort_by: date
+
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+# All three are on the GitHub Pages plugin allowlist, so the built-in
+# Pages build runs them without a custom Actions workflow.
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+defaults:
+  - scope: { path: "", type: posts }
+    values: { layout: post }
+  - scope: { path: "", type: guides }
+    values: { layout: guide }
+  - scope: { path: "" }
+    values: { layout: default }
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle

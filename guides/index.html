@@ -1,0 +1,16 @@
+---
+title: Guides
+---
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>Guides</h1>
+    <div class="post-list">
+      {%- assign guides = site.guides | sort: "date" | reverse -%}
+      {%- for post in guides %}
+      {% include post-card.html post=post %}
+      {%- else %}
+      <p class="muted">No guides yet.</p>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
