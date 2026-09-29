@@ -47,3 +47,15 @@ title: Post title
 description: Optional summary
 ---
 ```
+
+## Pushing (aichainverse only)
+
+`.githooks/pre-push` blocks any push unless GitHub confirms the credential belongs to the `aichainverse` account, and every pushed commit's author and committer is `335422648+aichainverse@users.noreply.github.com`. Git doesn't enable versioned hooks automatically, so after a fresh clone run:
+
+```bash
+git config core.hooksPath .githooks
+git config user.name "AIChainverse"
+git config user.email "335422648+aichainverse@users.noreply.github.com"
+git remote set-url origin https://aichainverse@github.com/aichainverse/aichainverse.github.io.git
+gh auth switch -u aichainverse   # gh serves only the active account's token
+```

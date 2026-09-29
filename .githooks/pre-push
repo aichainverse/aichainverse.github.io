@@ -15,8 +15,11 @@ fail() { echo "pre-push: $*" >&2; echo "pre-push: push blocked." >&2; exit 1; }
 
 # 1. The credential git will push with must belong to the required account.
 if [[ "$remote_url" == https://* ]]; then
-  token=$(printf 'url=%s\n\n' "$remote_url" | GIT_TERMINAL_PROMPT=0 git credential fill 2>/dev/null | sed -n 's/^password=//p')
-  [[ -n "$token" ]] || fail "no GitHub credential found for $remote_url (run: gh auth login, as $REQUIRED_LOGIN)"
+  # No prompts or IDE askpass popups: if no stored credential matches, fail fast.
+  token=$(printf 'url=%s\n\n' "$remote_url" \
+            | env -u GIT_ASKPASS -u SSH_ASKPASS GIT_TERMINAL_PROMPT=0 timeout 20 git -c core.askPass= credential fill 2>/dev/null \
+            | sed -n 's/^password=//p') || true
+  [[ -n "$token" ]] || fail "no GitHub credential for $remote_url (run: gh auth switch -u $REQUIRED_LOGIN)"
   login=$(curl -fsS -H "Authorization: Bearer $token" https://api.github.com/user 2>/dev/null \
             | sed -n 's/^ *"login": *"\([^"]*\)".*/\1/p' | head -1) || true
   unset token
