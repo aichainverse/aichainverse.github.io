@@ -4,3 +4,8 @@ _site/
 .jekyll-metadata
 .bundle/
 vendor/
+
+# Local-only overrides, never published (see README "Local preview")
+_config.local.yml
+Gemfile.local
+Gemfile.local.lock

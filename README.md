@@ -4,12 +4,25 @@ Jekyll source for https://aichainverse.github.io, built and served by GitHub Pag
 
 ## Local preview
 
+Runs in Docker (no local Ruby needed) at http://localhost:4000, with live reload:
+
 ```bash
-bundle config set --local path vendor/bundle
-bundle install
-bundle exec jekyll serve --livereload
-# http://127.0.0.1:4000
+docker run -d --name aichainverse-preview -p 4000:4000 -p 35729:35729 \
+  -v "$PWD":/srv/jekyll -v aichainverse-gems:/gems -w /srv/jekyll ruby:3.3 bash -c '
+    cfg=_config.yml; [ -f _config.local.yml ] && cfg=$cfg,_config.local.yml
+    [ -f Gemfile.local ] && export BUNDLE_GEMFILE=Gemfile.local
+    bundle config set --local path /gems && bundle install --quiet &&
+    bundle exec jekyll serve --host 0.0.0.0 --livereload --force_polling --config "$cfg"'
 ```
+
+`docker stop aichainverse-preview` / `docker start aichainverse-preview` afterwards. Restart it after editing any config file.
+
+### Local-only settings
+
+Anything that must differ locally goes in gitignored files, so the live site never sees it and nothing needs stashing:
+
+- `_config.local.yml`: merged over `_config.yml`. Nested keys merge; lists such as `plugins` replace the online list.
+- `Gemfile.local` (+ its lock): used instead of `Gemfile` when present.
 
 ## Layout
 
