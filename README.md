@@ -21,7 +21,8 @@ bundle exec jekyll serve --livereload
 - `_posts/YYYY-MM-DD-slug.md`: blog posts, published at `/blog/YYYY/MM/DD/slug/`
 - `_layouts/`, `_includes/`: page shell, header, footer
 - `assets/css/style.css`: styles (brand palette tokens at the top)
-- `assets/img/logo.svg`, `favicon.svg`: logo mark
+- `assets/img/logo.png`, `favicon.png`, `apple-touch-icon.png`: channel icon with the black background removed, generated from `assets/img/branding/profile.jpg`
+- `assets/img/branding/`: original channel artwork (`profile.jpg`, `banner.jpg`), both on pure black
 
 ## Front matter
 
