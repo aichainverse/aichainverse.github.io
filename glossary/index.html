@@ -1,0 +1,31 @@
+---
+title: Glossary
+---
+{%- assign none = "" | split: "" -%}
+{%- assign terms = site.data.glossary | default: none | sort_natural: "term" -%}
+<section class="section prose-page">
+  <div class="wrap narrow">
+    <h1>Glossary</h1>
+    {%- if terms.size > 0 %}
+    {%- assign letters = "" | split: "" -%}
+    {%- for t in terms -%}{%- assign l = t.term | slice: 0 | upcase -%}{%- unless letters contains l -%}{%- assign letters = letters | push: l -%}{%- endunless -%}{%- endfor %}
+    <nav class="az" aria-label="Jump to letter">{% for l in letters %}<a href="#letter-{{ l | downcase }}">{{ l }}</a>{% endfor %}</nav>
+    <div class="glossary">
+      {%- for l in letters %}
+      <h2 id="letter-{{ l | downcase }}">{{ l }}</h2>
+      <dl>
+        {%- for t in terms -%}
+        {%- assign tl = t.term | slice: 0 | upcase -%}
+        {%- if tl == l %}
+        <dt id="{{ t.id | default: t.term | slugify }}">{{ t.term }}</dt>
+        <dd>{{ t.definition | markdownify }}{% if t.link %}<a href="{{ t.link | relative_url }}">Learn more →</a>{% endif %}</dd>
+        {%- endif -%}
+        {%- endfor %}
+      </dl>
+      {%- endfor %}
+    </div>
+    {%- else %}
+    <p class="muted">No terms yet.</p>
+    {%- endif %}
+  </div>
+</section>

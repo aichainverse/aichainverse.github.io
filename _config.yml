@@ -28,14 +28,33 @@ links:
   tiktok: https://www.tiktok.com/@aichainverse
   github: https://github.com/aichainverse
 
+# Top navigation. An item is highlighted on its own URL and anything under it, plus any `sections` listed.
+nav:
+  - { title: Videos, url: /videos/ }
+  - { title: Learn, url: /learn/, sections: "/guides/,/tutorials/,/career/,/glossary/,/resources/" }
+  - { title: Jobs, url: /jobs/ }
+  - { title: Blog, url: /blog/ }
+  - { title: About, url: /about/ }
+
 permalink: /blog/:year/:month/:day/:title/
 
-# Long-form guides and tutorials live in _guides/ and publish at /guides/<file-name>/.
+# Collections publish at /<collection>/<file-name>/ (e.g. _guides/rag.md -> /guides/rag/).
 collections:
   guides:
     output: true
     permalink: /guides/:name/
     sort_by: date
+  tutorials:
+    output: true
+    permalink: /tutorials/:name/
+    sort_by: date
+  videos:
+    output: true
+    permalink: /videos/:name/
+    sort_by: date
+  career:
+    output: true
+    permalink: /career/:name/
 
 markdown: kramdown
 highlighter: rouge
@@ -57,6 +76,12 @@ defaults:
     values: { layout: post }
   - scope: { path: "", type: guides }
     values: { layout: guide }
+  - scope: { path: "", type: tutorials }
+    values: { layout: guide }
+  - scope: { path: "", type: videos }
+    values: { layout: video }
+  - scope: { path: "", type: career }
+    values: { layout: career }
   - scope: { path: "" }
     values: { layout: default }
 

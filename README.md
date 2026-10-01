@@ -26,14 +26,26 @@ Anything that must differ locally goes in gitignored files, so the live site nev
 
 ## Layout
 
-- `_config.yml`: site title, tagline, social links, plugins
-- `index.html`: home page
-- `guides/index.html`: guides listing
-- `_guides/<slug>.md`: long-form guides and tutorials, published at `/guides/<slug>/`
-- `blog/index.html`: blog listing
-- `_posts/YYYY-MM-DD-slug.md`: blog posts, published at `/blog/YYYY/MM/DD/slug/`
-- `_layouts/`, `_includes/`: page shell, header, footer
-- `assets/css/style.css`: styles (brand palette tokens at the top)
+| URL | Source |
+|---|---|
+| `/` | `index.html`: hero, then latest video / guides & tutorials / posts / open jobs (each block hides when empty) |
+| `/videos/` | `_videos/<slug>.md` |
+| `/learn/` | `learn/index.html`: hub linking the five sections below |
+| `/guides/` | `_guides/<slug>.md` (long-form explainers) |
+| `/tutorials/` | `_tutorials/<slug>.md` (step-by-step, same layout as guides) |
+| `/career/` | `_career/<slug>.md` (one page per role) |
+| `/glossary/` | `_data/glossary.yml` |
+| `/resources/` | `_data/resources.yml` |
+| `/shorts/` | `_data/shorts.yml` |
+| `/jobs/` | `_data/jobs.yml` |
+| `/blog/` | `_posts/YYYY-MM-DD-slug.md`, published at `/blog/YYYY/MM/DD/slug/` |
+| `/about/` | `about.html` |
+
+- `_config.yml`: site title, tagline, social links, top `nav`, collections, plugins
+- `_layouts/`: `default` shell, `guide` (guides + tutorials), `video`, `career`, `post`
+- `_includes/`: header, footer, cards (`post-card`, `video-card`, `job-card`), `open-jobs` (filters expired jobs), icons
+- `assets/js/main.js`: guide table of contents, code copy buttons, jobs tag filter
+- `assets/css/site.css`: styles, brand palette tokens at the top (not named `style.css`: the default Pages theme ships a file at that path and can overwrite it)
 - `assets/img/logo.png`, `favicon.png`, `apple-touch-icon.png`: channel icon with the black background removed, generated from `assets/img/branding/profile.jpg`
 - `assets/img/branding/`: original channel artwork (`profile.jpg`, `banner.jpg`), both on pure black
 
@@ -73,3 +85,44 @@ git config user.email "335422648+aichainverse@users.noreply.github.com"
 git remote set-url origin https://aichainverse@github.com/aichainverse/aichainverse.github.io.git
 gh auth switch -u aichainverse   # gh serves only the active account's token
 ```
+
+Tutorial (`_tutorials/<slug>.md`): same as a guide, plus optional:
+
+```yaml
+duration: 30 min
+prerequisites: ["Python 3.11", "A free API key"]
+```
+
+Video (`_videos/<slug>.md`, body = notes shown under the player):
+
+```yaml
+---
+title: Video title
+date: 2026-10-01
+youtube_id: VIDEO_ID          # from youtube.com/watch?v=VIDEO_ID
+description: One-line summary
+sources:                      # optional
+  - { title: Source name, url: https://example.com }
+---
+```
+
+Career role (`_career/<slug>.md`):
+
+```yaml
+---
+title: Page title
+role: Role name
+description: One-line summary
+skills: [Skill one, Skill two]
+related:                      # optional links to guides/tutorials
+  - { title: Tutorial title, url: /tutorials/slug/ }
+---
+```
+
+Data files (`_data/*.yml`) each start with a commented example entry. Add entries as a YAML list:
+
+- `glossary.yml`: `term`, `definition` (Markdown), optional `id`, `link`. Link to a term with `/glossary/#<id>`.
+- `resources.yml`: `category`, `name`, `url`, optional `note`.
+- `shorts.yml`: `platform` (`tiktok` or `youtube`), `url`, `title`, optional `date`.
+- `jobs.yml`: `title`, `company`, `url`, optional `location`, `remote`, `posted`, `expires`, `tags`. A job is hidden once `expires` passes.
+

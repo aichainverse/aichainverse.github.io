@@ -1,0 +1,20 @@
+---
+title: Resources
+---
+{%- assign none = "" | split: "" -%}
+{%- assign groups = site.data.resources | default: none | group_by: "category" -%}
+<section class="section prose-page">
+  <div class="wrap narrow">
+    <h1>Resources</h1>
+    {%- for grp in groups %}
+    <h2 id="{{ grp.name | slugify }}">{{ grp.name | default: "Other" }}</h2>
+    <ul class="link-list">
+      {%- for x in grp.items %}
+      <li><a href="{{ x.url }}" target="_blank" rel="noopener">{{ x.name }}</a>{% if x.note %}<span class="muted"> — {{ x.note }}</span>{% endif %}</li>
+      {%- endfor %}
+    </ul>
+    {%- else %}
+    <p class="muted">No resources yet.</p>
+    {%- endfor %}
+  </div>
+</section>

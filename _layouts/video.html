@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<article class="section prose-page">
+  <div class="wrap narrow">
+    <p class="eyebrow"><a href="{{ '/videos/' | relative_url }}">Videos</a> · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}<p class="lede">{{ page.description }}</p>{% endif %}
+    {%- if page.youtube_id %}
+    <div class="video-embed">
+      <iframe src="https://www.youtube-nocookie.com/embed/{{ page.youtube_id }}" title="{{ page.title | escape }}" loading="lazy"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <p class="meta"><a href="https://www.youtube.com/watch?v={{ page.youtube_id }}" target="_blank" rel="noopener">Watch on YouTube →</a></p>
+    {%- endif %}
+    <div class="prose">
+      {{ content }}
+    </div>
+    {%- if page.sources %}
+    <section class="prose sources">
+      <h2>Sources</h2>
+      <ul>{% for s in page.sources %}<li><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.title | default: s.url }}</a></li>{% endfor %}</ul>
+    </section>
+    {%- endif %}
+  </div>
+</article>

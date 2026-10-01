@@ -1,0 +1,18 @@
+---
+title: Learn
+---
+{%- assign none = "" | split: "" -%}
+{%- assign g = site.data.glossary | default: none | size -%}
+{%- assign r = site.data.resources | default: none | size -%}
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>Learn</h1>
+    <div class="hub">
+      <a class="card hub-card" href="{{ '/guides/' | relative_url }}"><h3>Guides</h3><span class="meta">{{ site.guides.size }} {% if site.guides.size == 1 %}guide{% else %}guides{% endif %}</span></a>
+      <a class="card hub-card" href="{{ '/tutorials/' | relative_url }}"><h3>Tutorials</h3><span class="meta">{{ site.tutorials.size }} {% if site.tutorials.size == 1 %}tutorial{% else %}tutorials{% endif %}</span></a>
+      <a class="card hub-card" href="{{ '/career/' | relative_url }}"><h3>Career</h3><span class="meta">{{ site.career.size }} {% if site.career.size == 1 %}role{% else %}roles{% endif %}</span></a>
+      <a class="card hub-card" href="{{ '/glossary/' | relative_url }}"><h3>Glossary</h3><span class="meta">{{ g }} {% if g == 1 %}term{% else %}terms{% endif %}</span></a>
+      <a class="card hub-card" href="{{ '/resources/' | relative_url }}"><h3>Resources</h3><span class="meta">{{ r }} {% if r == 1 %}link{% else %}links{% endif %}</span></a>
+    </div>
+  </div>
+</section>

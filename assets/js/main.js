@@ -47,3 +47,26 @@
     block.appendChild(btn);
   });
 })();
+
+// Jobs: hide listings that expired since the last build, and filter by tag.
+(function () {
+  var list = document.getElementById("job-list");
+  var today = new Date().toISOString().slice(0, 10);
+  document.querySelectorAll(".job[data-expires]").forEach(function (job) {
+    if (job.dataset.expires < today) job.remove();
+  });
+  if (!list) return;
+  var empty = document.getElementById("jobs-empty");
+  var jobs = list.querySelectorAll(".job");
+  if (empty) empty.hidden = jobs.length > 0;
+  var buttons = document.querySelectorAll(".filter button");
+  buttons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var tag = btn.dataset.tag;
+      buttons.forEach(function (b) { b.classList.toggle("active", b === btn); });
+      jobs.forEach(function (job) {
+        job.hidden = tag && job.dataset.tags.split(",").indexOf(tag) === -1;
+      });
+    });
+  });
+})();

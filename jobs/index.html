@@ -1,0 +1,24 @@
+---
+title: Jobs
+---
+{% include open-jobs.html %}
+{%- assign tags = "" | split: "" -%}
+{%- for j in open_jobs -%}{%- for t in j.tags -%}{%- unless tags contains t -%}{%- assign tags = tags | push: t -%}{%- endunless -%}{%- endfor -%}{%- endfor -%}
+{%- assign tags = tags | sort_natural -%}
+<section class="section prose-page">
+  <div class="wrap narrow">
+    <h1>Jobs</h1>
+    {%- if tags.size > 0 %}
+    <div class="chips filter" role="group" aria-label="Filter by tag">
+      <button type="button" class="active" data-tag="">All</button>
+      {%- for t in tags %}<button type="button" data-tag="{{ t | downcase | escape }}">{{ t }}</button>{% endfor %}
+    </div>
+    {%- endif %}
+    <ul class="job-list" id="job-list">
+      {%- for j in open_jobs %}
+      {% include job-card.html job=j %}
+      {%- endfor %}
+    </ul>
+    <p class="muted" id="jobs-empty"{% if open_jobs.size > 0 %} hidden{% endif %}>No open jobs right now.</p>
+  </div>
+</section>

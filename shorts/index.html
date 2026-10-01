@@ -1,0 +1,21 @@
+---
+title: Shorts
+---
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>Shorts</h1>
+    <div class="shorts-grid">
+      {%- assign none = "" | split: "" -%}
+      {%- assign shorts = site.data.shorts | default: none | sort: "date" | reverse -%}
+      {%- for s in shorts %}
+      <a class="card short-card" href="{{ s.url }}" target="_blank" rel="noopener">
+        <span class="short-icon">{% include icon.html name=s.platform %}</span>
+        <h3>{{ s.title }}</h3>
+        <span class="meta">{% if s.platform == "tiktok" %}TikTok{% else %}YouTube Shorts{% endif %}{% if s.date %} · {{ s.date | date: "%b %-d, %Y" }}{% endif %}</span>
+      </a>
+      {%- else %}
+      <p class="muted">No shorts yet.</p>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

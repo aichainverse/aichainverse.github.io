@@ -7,9 +7,12 @@
     </a>
     <nav aria-label="Primary">
       <ul class="nav-links">
-        <li><a href="{{ '/' | relative_url }}">Home</a></li>
-        <li><a href="{{ '/guides/' | relative_url }}">Guides</a></li>
-        <li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
+        {%- for item in site.nav -%}
+          {%- assign current = false -%}
+          {%- assign prefixes = item.sections | default: "" | split: "," | push: item.url -%}
+          {%- for pre in prefixes -%}{%- assign pre = pre | strip -%}{%- if pre != "" and page.url contains pre -%}{%- assign head = page.url | slice: 0, pre.size -%}{%- if head == pre -%}{%- assign current = true -%}{%- endif -%}{%- endif -%}{%- endfor %}
+        <li><a href="{{ item.url | relative_url }}"{% if current %} aria-current="page"{% endif %}>{{ item.title }}</a></li>
+        {%- endfor %}
       </ul>
     </nav>
   </div>

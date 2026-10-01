@@ -1,0 +1,9 @@
+# Job listings at /jobs/. Listings are hidden once `expires` has passed.
+# - title: Example role
+#   company: Example company
+#   location: City, Country
+#   remote: true
+#   url: https://example.com/apply
+#   posted: 2026-10-01
+#   expires: 2026-10-31
+#   tags: [AI, Python]

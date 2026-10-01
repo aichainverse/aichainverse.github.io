@@ -1,0 +1,8 @@
+{%- assign j = include.job -%}
+<li class="card job" data-tags="{{ j.tags | join: ',' | downcase | escape }}"{% if j.expires %} data-expires="{{ j.expires | date: '%Y-%m-%d' }}"{% endif %}>
+  <div>
+    <h3><a href="{{ j.url }}" target="_blank" rel="noopener">{{ j.title }}</a></h3>
+    <p class="meta">{{ j.company }}{% if j.location %} · {{ j.location }}{% endif %}{% if j.remote %} · Remote{% endif %}{% if j.posted %} · Posted {{ j.posted | date: "%b %-d" }}{% endif %}</p>
+  </div>
+  {%- if j.tags %}<ul class="chips">{% for t in j.tags %}<li>{{ t }}</li>{% endfor %}</ul>{% endif %}
+</li>

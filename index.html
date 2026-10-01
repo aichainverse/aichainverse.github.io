@@ -15,3 +15,42 @@ layout: default
     </div>
   </div>
 </section>
+
+{%- assign latest_video = site.videos | sort: "date" | last -%}
+{%- if latest_video %}
+<section class="section home-block">
+  <div class="wrap">
+    <div class="block-head"><h2>Latest video</h2><a href="{{ '/videos/' | relative_url }}">All videos →</a></div>
+    <div class="video-grid">{% include video-card.html video=latest_video %}</div>
+  </div>
+</section>
+{%- endif %}
+
+{%- assign learn = site.guides | concat: site.tutorials | sort: "date" | reverse -%}
+{%- if learn.size > 0 %}
+<section class="section home-block">
+  <div class="wrap">
+    <div class="block-head"><h2>Latest guides &amp; tutorials</h2><a href="{{ '/learn/' | relative_url }}">Learn →</a></div>
+    <div class="post-list">{% for post in learn limit: 3 %}{% include post-card.html post=post %}{% endfor %}</div>
+  </div>
+</section>
+{%- endif %}
+
+{%- if site.posts.size > 0 %}
+<section class="section home-block">
+  <div class="wrap">
+    <div class="block-head"><h2>Latest posts</h2><a href="{{ '/blog/' | relative_url }}">Blog →</a></div>
+    <div class="post-list">{% for post in site.posts limit: 3 %}{% include post-card.html post=post %}{% endfor %}</div>
+  </div>
+</section>
+{%- endif %}
+
+{% include open-jobs.html %}
+{%- if open_jobs.size > 0 %}
+<section class="section home-block">
+  <div class="wrap">
+    <div class="block-head"><h2>Open jobs</h2><a href="{{ '/jobs/' | relative_url }}">All jobs →</a></div>
+    <ul class="job-list">{% for j in open_jobs limit: 3 %}{% include job-card.html job=j %}{% endfor %}</ul>
+  </div>
+</section>
+{%- endif %}

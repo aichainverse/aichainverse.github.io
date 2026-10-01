@@ -1,0 +1,16 @@
+---
+title: Videos
+---
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>Videos</h1>
+    <div class="video-grid">
+      {%- assign videos = site.videos | sort: "date" | reverse -%}
+      {%- for v in videos %}
+      {% include video-card.html video=v %}
+      {%- else %}
+      <p class="muted">No videos yet.</p>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

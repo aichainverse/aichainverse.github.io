@@ -1,0 +1,11 @@
+{%- comment -%}
+  Sets `open_jobs` to the jobs in _data/jobs.yml whose `expires` date has not passed at build time
+  (main.js also hides ones that expire between builds), newest first.
+{%- endcomment -%}
+{%- assign now = site.time | date: "%s" | plus: 0 -%}
+{%- assign open_jobs = "" | split: "" -%}
+{%- assign all_jobs = site.data.jobs | default: open_jobs | sort: "posted" | reverse -%}
+{%- for j in all_jobs -%}
+  {%- if j.expires -%}{%- assign exp = j.expires | date: "%s" | plus: 86399 -%}{%- else -%}{%- assign exp = now | plus: 1 -%}{%- endif -%}
+  {%- if exp > now -%}{%- assign open_jobs = open_jobs | push: j -%}{%- endif -%}
+{%- endfor -%}

@@ -3,10 +3,12 @@ layout: default
 ---
 {%- assign words = content | number_of_words -%}
 {%- assign minutes = words | divided_by: 200 | at_least: 1 -%}
+{%- comment -%} Shared by guides and tutorials: links and prev/next stay within the page's own collection. {%- endcomment -%}
+{%- assign coll_url = '/' | append: page.collection | append: '/' -%}
 <article class="section prose-page guide">
   <div class="wrap">
     <header class="guide-head narrow">
-      <p class="eyebrow"><a href="{{ '/guides/' | relative_url }}">Guides</a>{% if page.level %} · {{ page.level }}{% endif %}</p>
+      <p class="eyebrow"><a href="{{ coll_url | relative_url }}">{{ page.collection | capitalize }}</a>{% if page.level %} · {{ page.level }}{% endif %}{% if page.duration %} · {{ page.duration }}{% endif %}</p>
       <h1>{{ page.title }}</h1>
       {% if page.description %}<p class="lede">{{ page.description }}</p>{% endif %}
       <p class="meta">
@@ -14,6 +16,12 @@ layout: default
         {% if page.updated %} · Updated <time datetime="{{ page.updated | date_to_xmlschema }}">{{ page.updated | date: "%B %-d, %Y" }}</time>{% endif %}
         · {{ minutes }} min read
       </p>
+      {%- if page.prerequisites %}
+      <div class="prereqs card">
+        <p class="toc-title">Prerequisites</p>
+        <ul>{% for p in page.prerequisites %}<li>{{ p | markdownify | remove: '<p>' | remove: '</p>' | strip }}</li>{% endfor %}</ul>
+      </div>
+      {%- endif %}
     </header>
 
     <div class="guide-body">
@@ -26,14 +34,14 @@ layout: default
       </div>
     </div>
 
-    {%- assign guides = site.guides | sort: "date" -%}
+    {%- assign guides = site[page.collection] | sort: "date" -%}
     {%- for g in guides -%}
       {%- if g.url == page.url -%}
         {%- assign prev_i = forloop.index0 | minus: 1 -%}
         {%- assign next_i = forloop.index0 | plus: 1 -%}
       {%- endif -%}
     {%- endfor -%}
-    <nav class="pager" aria-label="More guides">
+    <nav class="pager" aria-label="More {{ page.collection }}">
       {%- if prev_i >= 0 %}{% assign g = guides[prev_i] %}<a class="card" href="{{ g.url | relative_url }}"><span>← Previous</span>{{ g.title }}</a>{% else %}<span></span>{% endif -%}
       {%- if next_i < guides.size %}{% assign g = guides[next_i] %}<a class="card next" href="{{ g.url | relative_url }}"><span>Next →</span>{{ g.title }}</a>{% endif -%}
     </nav>
