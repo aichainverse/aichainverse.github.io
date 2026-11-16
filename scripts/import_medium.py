@@ -49,7 +49,13 @@ ARTICLES = {
     "02-how-chatgpt-writes": {"date": "2026-11-05 10:00:00 +0500", "cover": (
         "aichainverse-youtube-llm-thumbnail-1280x720.png",
         "AIChainVerse cover: How ChatGPT writes. LLMs, Large Language Models. Guess, add, repeat."),
-    },
+        "shorts_dir": "aichainverse-shorts-llm", "shorts": [
+        ("mPxDWZYC5jU", "Lawyers Fined $5,000 Over Fake ChatGPT Cases", "aichainverse-short-llm-01-hallucination-thumbnail-1080x1920.png"),
+        ("J6bSrmiCuLg", "3 Myths About ChatGPT (Most People Believe #2)", "aichainverse-short-llm-02-myths-thumbnail-1080x1920.png"),
+        ("guQPcePtUec", "How ChatGPT Picks the Next Word", "aichainverse-short-llm-03-next-token-guess-thumbnail-1080x1920.png"),
+        ("z-dVBwn1zLs", "What Is an LLM? Explained in One Sentence", "aichainverse-short-llm-04-llm-one-sentence-thumbnail-1080x1920.png"),
+        ("UQ2IoHOn3cY", "Why ChatGPT Gives Different Answers Every Time", "aichainverse-short-llm-05-temperature-thumbnail-1080x1920.png"),
+    ]},
     "03-what-is-an-ai-agent": {"date": "2026-11-07 09:00:00 +0500", "links": {
         "YouTube link": "https://www.youtube.com/watch?v=JHo6qXs16MY",
     }},
