@@ -2,7 +2,7 @@
 <a class="card video-card" href="{{ v.url | relative_url }}">
   {%- if v.youtube_id %}<img src="https://i.ytimg.com/vi/{{ v.youtube_id }}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">{% endif %}
   <div class="video-card-body">
-    <time datetime="{{ v.date | date_to_xmlschema }}">{{ v.date | date: "%b %-d, %Y" }}</time>
+    <time datetime="{{ v.date | date_to_xmlschema }}">{% include date.html date=v.date style="short" %}</time>
     <h3>{{ v.title }}</h3>
   </div>
 </a>

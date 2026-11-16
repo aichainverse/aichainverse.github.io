@@ -1,0 +1,287 @@
+---
+title: "Nobody Hacked the Blockchain: How $6.3 Billion Left Binance in 20 Minutes"
+description: "A poisoned installer, a fake job interview and one Ethereum feature. Here's the biggest crypto heist ever, step by step, and what it means for the crypto you keep on an exchange."
+date: 2026-11-12 09:00:00 +0500
+image: /assets/img/blog/nobody-hacked-the-blockchain/bn-cover.jpg
+image_alt: "AIChainVerse cover for the Binance hack explainer: how $6.3 billion left Binance."
+tags: ["Binance", "Cryptocurrency", "Cybersecurity", "Ethereum", "Blockchain"]
+---
+<p>On the evening of 29 October 2026, about 6.3 billion dollars in crypto left Binance's wallets on ten blockchains, most of it in roughly 20 minutes. Binance is the world's largest crypto exchange, and this is the largest crypto theft on record, more than four times the 1.5 billion dollar Bybit hack of February 2025.</p>
+
+<p>The headlines made it sound as if someone had "hacked crypto". That isn't what happened. <strong>Bitcoin and Ethereum worked exactly as designed.</strong> According to Binance's own account, the attack started months earlier with a doctored software download and a fake job interview, and it ended with Binance's own systems signing the transfers that emptied its wallets.</p>
+
+<p>I'll walk through the heist step by step, from the first infected laptop to the getaway, and use one ordinary user's 500 dollars to answer the question every exchange user should ask: <strong>when your crypto sits on an exchange, what actually protects it?</strong> There's a full video version below if you'd rather watch.</p>
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/9CdUWeeAO3A" title="YouTube video" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+
+<h2>Meet Bilal</h2>
+
+<p>Bilal is a freelance developer who keeps part of his savings on Binance. On the evening of 29 October he opens the app to move 500 USDC to his own wallet. The withdraw button is greyed out, and a banner says withdrawals are suspended. By the next morning, the news is everywhere. (Bilal is a teaching example, but everything that happens around him is drawn from Binance's report and public on-chain analysis.)</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-withdrawals-suspended.jpg" alt="From the video: '29 October 2026.' Phones and tea cups on a wooden table; cards read '500 USDC → his own wallet', 'Withdrawals suspended', 'By the next morning, the news is everywhere'." width="1600" height="900" loading="lazy">
+<figcaption>Bilal's 500 USDC, and a withdraw button that won't work.</figcaption>
+</figure>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-biggest-theft.jpg" alt="From the video: 'The biggest crypto theft on record.' About $6.3 billion, on 10 blockchains, most of it in about 20 minutes. A bar chart compares Bybit, 2025: $1.5B with Binance, 2026: about $6.3B." width="1600" height="900" loading="lazy">
+<figcaption>More than four times the previous record.</figcaption>
+</figure>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-not-the-blockchain.jpg" alt="From the video: 'So what happened?' Crossed out: 'Hacked the blockchain', 'Stole a password'. Instead: 'Bitcoin and Ethereum worked exactly as designed', 'A tampered download', 'A fake job interview', 'It ended with Binance's own systems signing'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Three ideas first</h2>
+
+<p><strong>An exchange account is an IOU.</strong> When Bilal deposits 500 USDC on Binance, the coins move into wallets Binance controls. His account shows a number in Binance's internal records: a promise that Binance owes him 500 USDC. This is called <em>custodial</em> storage, because Binance is the custodian. In a self-custody wallet it's the other way round: you hold the keys yourself. (I covered that side in <a href="/blog/2026/11/09/your-crypto-wallet-holds-zero-crypto/">Your Crypto Wallet Holds Zero Crypto</a>.)</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-iou.jpg" alt="From the video: 'An exchange account is an IOU.' Bilal sends 500 USDC to Binance's wallets; Binance's records show his balance: 'Your balance = Binance's promise to pay you'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p><strong>Keys and signatures.</strong> On a blockchain, coins move only when a transaction carries a valid <em>digital signature</em> made with the wallet's <em>private key</em>. The network never asks who you are. It checks only that the signature is valid. So whoever can make a valid signature controls the coins, whether or not they ever see the key itself. Keep that sentence in mind, because the whole heist hangs on it.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-keys-signatures.jpg" alt="From the video: 'Keys and signatures.' A golden key and a glowing gate. 'Coins move only with a valid signature from the wallet's private key', 'Never asks who you are', 'Checks only the signature', 'Whoever can sign controls the coins'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p><strong>Hot and cold wallets.</strong> Exchanges keep most customer funds in <em>cold wallets</em>, whose keys stay offline, and a working float in <em>hot wallets</em>, which stay online so withdrawals can be paid out in minutes. Hot wallets are signed by automated <em>signing systems</em>: servers that hold or use the keys and sign every legitimate withdrawal, thousands of times a day. They are the most exposed part of any exchange.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-hot-cold.jpg" alt="From the video: 'Hot and cold wallets.' Online: signing systems sign thousands of times a day for hot wallets that pay customers in minutes, marked 'Most exposed'. Offline: cold wallets, keys offline, most of the funds." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>One more idea, which we'll need for the Ethereum part. Since the Pectra upgrade of 7 May 2025, a rule called <strong>EIP-7702</strong> lets an ordinary key-controlled account point to a smart contract and run that contract's code as if it were its own. This is called a <em>delegation</em>, and it is authorised by a signature from the account's key. It exists for good reasons: smart wallets that bundle payments, or let someone else pay the fee. But whoever controls the delegated code can tell the account what to do.</p>
+
+<h2>The heist in one sentence</h2>
+
+<p>The attackers broke into the laptops of Binance's wallet engineers, used that access to make Binance's own signing systems approve a delegation on a busy hot wallet, and then used that delegation to sweep billions of dollars out of it on-chain, by a route the normal withdrawal controls never saw.</p>
+
+<p>Think of a bank robbery where nobody cracks the vault. The robbers plant a bug on a staff member's laptop, borrow the badge of the person who can install new machines, and slip one fake machine into the back office that issues perfectly genuine-looking orders. The vault opens because it believes the order.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-bank-robbery.jpg" alt="From the video: 'Like a bank robbery.' An open vault door. Crossed out: 'Break into the vault'. Instead: 'A bug on a staff laptop', 'Borrow the installer's badge', 'One fake machine in the back office', 'The vault opens because it believes the order'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Step 1: The foothold (June 2026)</h2>
+
+<p>Big exchanges defend their servers well, so attackers go after the people who run them. According to Binance's security report, the intrusion began in June, when an engineer on its Wallet DevOps team searched the web for a popular AI coding tool and installed it using a doctored copy of <strong>Homebrew</strong>, a common package installer for developer laptops, found through a search engine. The tampered installer gave the attackers a hidden way into that laptop.</p>
+
+<p>This is a <em>supply-chain attack</em>: instead of attacking the target directly, you poison something the target trusts and installs. Bilal's 500 USDC is still sitting quietly in Binance's ledger. But one laptop with access to Binance's wallet systems now belongs, quietly, to someone else.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-foothold.jpg" alt="From the video: 'Step 1 · June: The foothold.' An engineer at a laptop. 'A wallet-team engineer searched for an AI coding tool', 'A doctored copy of Homebrew, a common developer installer', 'A hidden door into the laptop', 'Supply-chain attack: poison something the target trusts'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Step 2: The fake job interview (September 2026)</h2>
+
+<p>In September, a second wallet engineer was approached on a job-hunting site by someone posing as a project director at another company. After interviews and video calls, the engineer was asked to complete a coding "assignment" and downloaded a code repository onto a work computer. The repository contained malicious code.</p>
+
+<p>Fake recruiters with fake coding tests are a known signature of North Korea's hacking groups. The same trick was reported behind the 625 million dollar Ronin bridge hack of March 2022, where a fake job offer reached an engineer at Sky Mavis. Two laptops are now compromised, and Bilal still sees nothing.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-fake-interview.jpg" alt="From the video: 'Step 2 · September: The fake job interview.' An engineer on a video call. 'A fake project director', 'Interviews and video calls', 'A coding assignment to run on a work computer', 'Hidden malicious code', '2 laptops compromised'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Step 3: Spreading inside (20 October 2026)</h2>
+
+<p>On 20 October, the attackers used the second engineer's computer, and abused an internal AI tool, to take control of the computers of two more wallet engineers. Binance hasn't explained how the AI tool made this possible. One of those machines held a <em>container deployment token</em>: a credential that lets its holder start new software services inside Binance's infrastructure.</p>
+
+<p>Security people call this <em>lateral movement</em>: hopping from one inside machine to the next until you reach the one with the access you need. Notice what the attackers were after. They never needed Binance's private keys. They needed a way to make Binance's systems sign for them.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-spreading-inside.jpg" alt="From the video: 'Step 3 · 20 October: Spreading inside.' A diagram of the wallet team's laptops 1 to 4, with an internal AI tool reaching laptops 3 and 4 ('how: not yet explained'); laptop 4 holds a 'deployment token', 'a key card that can start new services inside Binance'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Step 4: The system signs (29 October, from about 20:05 UTC)</h2>
+
+<p>On 29 October, the attackers signed into the third engineer's computer, used the stolen token to deploy a container (a small, self-contained software service) inside Binance's systems, and started a malicious script. From inside, that service could submit transactions to the signing systems, and the signing systems produced valid signatures.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-system-signs.jpg" alt="From the video: 'Step 4 · 29 October: The system signs.' A diagram: Laptop 3 with a stolen token starts a fake service inside Binance running a malicious script; it sends transactions to the signing systems, which return valid signatures to the blockchains." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>Binance says it found no evidence that a wallet private key leaked. To the blockchains, every transaction looked like Binance. The first theft transaction landed on the XRP Ledger at about 20:05 UTC, according to TRM Labs. At about 20:20 UTC, the attacks on Ethereum and Bitcoin began.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-looked-like-binance.jpg" alt="From the video: 'To the blockchain, it looked like Binance.' 'Binance: no evidence a private key leaked', 'Every transaction: a genuine signature', 'about 20:05 UTC, first theft, XRP Ledger', 'about 20:20 UTC, Ethereum and Bitcoin'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Step 5: The EIP-7702 trick (20:20 to 20:24 UTC)</h2>
+
+<p>On Ethereum, the attackers went after one of Binance's busiest hot wallets, known on-chain as "Binance 14". At 20:20 UTC they sent a single transaction carrying <strong>50 EIP-7702 authorisations</strong>, all signed by Binance 14's own key and all pointing to a "sweeper" contract the attackers controlled.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-eip-7702.jpg" alt="From the video: 'The trick: EIP-7702 delegation.' 'Ethereum rule, live since May 2025'. An ordinary wallet, controlled by a key, points to smart contract code: 'delegation: runs it as its own'. 'Built for smart wallets and bundled payments'. 'Whoever controls the code can tell the wallet what to do'." width="1600" height="900" loading="lazy">
+</figure>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-fifty-delegations.jpg" alt="From the video: 'One transaction, 50 delegations.' A fan of golden cards feeding a glass sweeper machine. 'Hot wallet Binance 14', '20:20 UTC', '50 delegations', 'all signed with its own key', 'a sweeper contract the attackers controlled'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>Why 50? Every Ethereum account has a counter, called a <em>nonce</em>, that goes up by one with each transaction, and an authorisation is only valid for the account's current counter. Binance 14 was sending transactions almost every block, so its counter moved fast. The attackers signed authorisations for 50 counter values in a row so that one would match. The other 49 were simply skipped.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-nonce.jpg" alt="From the video: 'Why fifty?' A wallet's counter goes up by 1 with every transaction and was moving almost every block; a delegation works only for the current number. A row of 50 squares from n to n+49 with one green match: '49 skipped'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>Three and a half minutes later, at 20:24 UTC, one call told Binance 14 to run the sweeper's code. In a single transaction it moved about <strong>167,464 ETH plus 63 other tokens</strong> to the attackers. A second function used Binance 14's permissions to release 823 million USDC from a separate Binance smart-contract wallet.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-one-sweep.jpg" alt="From the video: 'One sweep.' Coins pour from a glass hot wallet through a funnel. '20:24 UTC · 3½ minutes later', 'one transaction', 'about 167,000 ETH + 63 other tokens', '823M USDC released from a second Binance wallet'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h3>Why pausing withdrawals didn't stop it</h3>
+
+<p>This is the part that made it so damaging. Binance suspended withdrawals, but this money wasn't leaving through the withdrawal system. It was leaving through code that now lived on Binance 14 itself, on the Ethereum blockchain. Binance's own automated systems even kept routing fresh funds into the wallet to top it up, and the attackers swept it again.</p>
+
+<p>That continued until Binance sent a transaction that cleared the delegation at 00:10 UTC on 30 October, about four hours later. Clearing a delegation removes the code, but it doesn't change the key, so the signing access itself also had to be shut down.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-pause-didnt-stop.jpg" alt="From the video: 'Why pausing didn't stop it.' Binance's systems: the withdrawal system is paused and blocked. On-chain: auto top-ups flow into Binance 14, through the sweeper code, money out to the attackers. 'Delegation live about 4 hours', 'Cleared about 00:10 UTC, 30 Oct'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Step 6: The getaway and the freeze race</h2>
+
+<p>By the end, about 6.3 billion dollars had left Binance's wallets on ten blockchains (Binance's estimate; analytics firms put it between 6.3 and 6.4 billion). By chain, according to reporting compiled from the analytics firms, that was roughly 3.8 billion dollars on Ethereum, 1.5 billion on Bitcoin, 0.63 billion on Tron, 0.3 billion on the XRP Ledger, and smaller amounts on Solana, Arbitrum, Optimism, Base, Avalanche and Polygon.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-getaway.jpg" alt="From the video: 'The getaway.' About $6.3B on 10 chains, as a bar chart: Ethereum $3.8B, Bitcoin $1.5B, Tron $0.6B, XRP Ledger $0.3B, Solana and 5 more $0.2B. 'Approximate, from analytics firms'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>Then came the race to freeze it. Stablecoins such as USDT and USDC are issued by companies that can freeze tokens at a given address. According to Elliptic, Tether froze stolen USDT on Ethereum 37 minutes after it reached the attacker's wallet, and Circle froze USDC soon after. In total, roughly 3 billion dollars was frozen by stablecoin issuers and partners (estimates range from 2.7 to 3 billion depending on who's counting). Bitcoin and ETH have no issuer, so nobody can freeze them. Those funds stayed with the attackers.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-freeze-race.jpg" alt="From the video: 'The race to freeze it.' Coins frozen in ice blocks while gold and silver coins roll on. 'Stablecoin issuers can freeze tokens at an address', 'Tether: USDT frozen in 37 min (Elliptic)', 'Circle: USDC frozen soon after', 'about $3B in stablecoins frozen', 'Bitcoin and ether: nobody can freeze them'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>To hide the rest, the stolen funds were spread across thousands of new wallets. Elliptic later counted more than 20,000 wallets and 65,000 transactions across 16 blockchains. It also found the launderers creating six memecoins on the NEAR blockchain and trading them between their own wallets, moving about 430,000 dollars in a way that looks like ordinary trading. That's small next to the total, but it shows the method: make stolen money look boring.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-laundering.jpg" alt="From the video: 'Hiding the rest.' Thousands of small purses scattered across a network. '20,000+ wallets on 16 blockchains (Elliptic)', '6 home-made memecoins, traded with themselves', 'The goal: make stolen money look boring', 'Fake trading'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h3>Who did it?</h3>
+
+<p>On 31 October the FBI attributed the attack to <strong>TraderTraitor</strong>, a North Korean state-backed group also tracked as Jade Sleet and UNC4899 and linked to the wider Lazarus Group. It published hundreds of attacker addresses and asked exchanges, DeFi services and node operators to block them. On 3 November, North Korea denied any involvement. Binance has said it's working with law enforcement and hasn't named the attacker itself.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-who-did-it.jpg" alt="From the video: 'Who did it?' 'FBI, 31 Oct: TraderTraitor (North Korea-linked)', 'part of the Lazarus Group', 'Hundreds of addresses published to block', 'North Korea denies it', 'Binance: working with law enforcement'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>And Bilal's 500 USDC?</h2>
+
+<p>Bilal's money was never "in" a specific coin he owned. It was a line in Binance's ledger, backed by Binance's wallets. So the real question was whether Binance would keep its promise.</p>
+
+<p>It did. Binance said it would absorb the loss, not its users. It refilled its wallets from its emergency fund (the Secure Asset Fund for Users, or SAFU), its futures insurance fund, its Bitcoin reserve and its corporate treasury: 90% of the stolen tokens were replaced by 31 October and 98% by 3 November. Withdrawals reopened on 15 blockchains at 06:00 UTC on 1 November.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-who-paid.jpg" alt="From the video: 'Who paid?' A glass cylinder filling with gold coins from a reserve. 'Binance covered the loss, not its users': SAFU emergency fund, insurance fund, Bitcoin reserve, company treasury. '98% replaced by 3 Nov', 'Withdrawals back: 1 Nov'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>Bilal moved his 500 USDC out, and he wasn't alone: net outflows reached about 4.9 billion dollars by the morning of 2 November, roughly 3% of Binance's assets, according to DefiLlama.</p>
+
+<p>Here's the whole journey in one line: <strong>fake installer → fake job → inside spread → the system signs → 50 delegations → one sweep → freeze race → laundering.</strong></p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-journey.jpg" alt="From the video: 'The whole journey.' Bilal on his phone: '500 USDC → his own wallet', 'about $4.9B net outflows by 2 Nov (about 3% of assets)'. A chain: Poisoned installer → Fake job → Spread inside → The system signs → Freeze race → One sweep → 50 delegations." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Four myths</h2>
+
+<p><strong>Myth 1: "Bitcoin or Ethereum got hacked."</strong> The blockchains did exactly what they're built to do: accept validly signed transactions. The weak point was Binance's company infrastructure and the people who run it.</p>
+
+<p><strong>Myth 2: "They stole Binance's private keys."</strong> Binance says it found no evidence of a key leak. The attackers didn't need the key. They needed the system that uses the key to sign for them. Control of signing is control of the money.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-myths-1.jpg" alt="From the video: 'Four myths.' Crossed out: 'Myth 1: Bitcoin or Ethereum got hacked'. 'The blockchains accepted validly signed transactions, as designed', 'The weak point: the company and its people'. Crossed out: 'Myth 2: they stole the private keys'. 'Control the signing = control the money'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p><strong>Myth 3: "Once withdrawals are paused, the money is safe."</strong> A pause only stops the exchange's own withdrawal path. An on-chain delegation lives on the blockchain and keeps working until another transaction cancels it, which took Binance about four hours.</p>
+
+<p><strong>Myth 4: "Customers always get their money back after an exchange hack."</strong> Binance could cover this loss because it had the reserves. When Mt. Gox lost about 850,000 bitcoin in 2014, or when FTX's customer funds went missing in 2022, customers waited years. Reimbursement is a company's choice and depends on its balance sheet, not a rule of crypto.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-myths-2.jpg" alt="From the video: crossed out 'Myth 3: paused withdrawals = safe'. 'A delegation keeps working until another transaction cancels it'. Crossed out 'Myth 4: customers always get repaid'. 'Binance paid because it had the reserves', 'Mt. Gox 2014 (about 850,000 BTC) · FTX 2022: customers waited years'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>A pattern, not a one-off</h2>
+
+<ul>
+<li><strong>Ronin bridge, March 2022, about 625 million dollars.</strong> A fake job offer reportedly gave attackers access to the systems behind most of the bridge's validator keys.</li>
+<li><strong>Bybit, February 2025, about 1.5 billion dollars.</strong> Attackers linked to North Korea compromised the wallet interface Bybit's staff used to approve a transfer, so the signers approved something different from what they saw.</li>
+<li><strong>Binance, October 2026, about 6.3 billion dollars.</strong> Supply-chain malware, a fake interview, an abused internal AI tool and an EIP-7702 delegation.</li>
+</ul>
+
+<p>The lesson is the same each time: <strong>the signature was genuine; the intent was not.</strong> Binance says it detected and blocked 57 suspected North Korea-linked cyber incidents in 2026 before this one succeeded. For attackers with patience, one success is enough.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-pattern.jpg" alt="From the video: 'A pattern, not a one-off.' A timeline: Ronin 2022, about $625M, fake job offer; Bybit Feb 2025, about $1.5B, tampered approval screen; Binance Oct 2026, about $6.3B, fake job and signing systems. 'Signed what they didn't see'. 'The signature was genuine. The intent was not.'" width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>What this means for your crypto</h2>
+
+<p><strong>Custody is a trade-off, not a free lunch.</strong> On an exchange, your safety rests on the company's security and its reserves. In self-custody, it rests on you: lose your seed phrase or sign a malicious approval, and there's no SAFU fund to refill your wallet. Neither option is risk-free. (The <a href="https://www.youtube.com/watch?v=vsQ5_1qqY7A">crypto wallet explainer</a> covers the trade-offs in detail.)</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-custody.jpg" alt="From the video: 'What this means for you.' On an exchange: safety = the company's security + reserves. In your own wallet: safety = you; lose your seed phrase, approve a bad transaction, no emergency fund. 'Neither is risk-free'. 'Exchange: only what you're trading · Savings: a wallet you control'." width="1600" height="900" loading="lazy">
+</figure>
+
+<ul>
+<li><strong>Spread the risk.</strong> Keep on an exchange only what you're actively trading, and move long-term savings to a wallet you control, carefully.</li>
+<li><strong>Expect pauses.</strong> Any exchange can freeze withdrawals during an incident. Don't keep money you need this week in one place.</li>
+<li><strong>Freezes cut both ways.</strong> The same power that let Tether and Circle freeze billions in stolen stablecoins means an issuer can freeze any address. Bitcoin and ETH can't be frozen by anyone, which protects you from censorship and also protects thieves.</li>
+<li><strong>Some questions are still open.</strong> Binance's final root-cause report hasn't been published, the loss and frozen figures still vary between firms, and most of the unfrozen ETH and BTC hasn't been recovered.</li>
+</ul>
+
+<h2>A note from building on Ethereum</h2>
+
+<p>As someone who builds on Ethereum, the lesson I take from this is that <strong>a signing system must understand what it signs.</strong> A policy engine that checks "is this a withdrawal to an approved address, under the daily limit?" will happily sign something that isn't a withdrawal at all, such as an EIP-7702 authorisation.</p>
+
+<p>Hot-wallet signers should refuse by default any transaction type they don't expect, treat a delegation as the most sensitive thing an account can sign, and raise an alarm the moment a type-4 transaction or a delegation appears on a treasury address.</p>
+
+<p>The second lesson is about credentials. The token that could deploy a new service into the wallet infrastructure sat on one engineer's laptop. Deployment rights for signing infrastructure belong behind a separate approval, not on any one person's machine.</p>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-practice.jpg" alt="From the video: 'Lessons from building on Ethereum.' 'A signer must understand what it signs.' A transaction goes through a policy check (withdrawal? approved address? under the limit?) to Sign; a delegation is 'not checked' and should hit 'Unexpected type? Refuse'. 'Alarm: delegation on a treasury wallet'." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>What's next</h2>
+
+<p>These are trends to watch, not certainties.</p>
+
+<ul>
+<li><strong>Binance's final report</strong> should settle the remaining questions, including how the internal AI tool was abused and how the signing path was reached.</li>
+<li><strong>Delegation monitoring.</strong> Expect exchanges and wallet providers to watch for and block EIP-7702 delegations on hot wallets, and wallet apps to warn loudly before you sign one.</li>
+<li><strong>Developer machines as targets.</strong> Fake recruiters, poisoned installers and AI coding tools are now part of the attack surface. Expect stricter rules on what engineers with wallet access can install.</li>
+<li><strong>Regulators.</strong> The UK's Financial Conduct Authority said it's looking at the impact on UK users. More rules on how exchanges hold and prove their reserves are likely to follow.</li>
+</ul>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-next.jpg" alt="From the video: 'What's next: trends, not promises.' Binance's final report (the open questions, incl. the AI tool); watch and block delegations on hot wallets; stricter install rules for engineers with wallet access; regulators: how exchanges hold and prove reserves." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>The takeaway</h2>
+
+<ul>
+<li>Nobody broke the blockchain. Attackers broke into people's laptops, then made Binance's own systems sign.</li>
+<li>It took months of preparation: a poisoned installer, a fake job interview and an abused internal AI tool.</li>
+<li>One EIP-7702 delegation let the attackers sweep a hot wallet on-chain, past paused withdrawals, until it was cancelled.</li>
+<li>Roughly 3 billion dollars in stablecoins was frozen. Bitcoin and ETH couldn't be.</li>
+<li>On an exchange, your balance is a promise. Binance kept it this time because it had the reserves.</li>
+</ul>
+
+<figure>
+<img src="/assets/img/blog/nobody-hacked-the-blockchain/bn-takeaway.jpg" alt="From the video: Bilal smiling at his phone. 'Nobody broke the blockchain.' 'They made Binance's own systems sign.' 'On an exchange, your balance is a promise.' 'Know who holds your keys.'" width="1600" height="900" loading="lazy">
+</figure>
+
+<p>So when your crypto sits on an exchange, what protects it? Not the blockchain. <strong>The company's security, and the company's reserves.</strong> Know who holds your keys.</p>
+
+<p><em>This article is for education only and isn't financial or security advice. Facts as of 12 November 2026. Binance's final root-cause report is not out yet, and some figures still vary between analytics firms. Bilal is an illustrative example.</em></p>
+
+<hr>
+
+<p><em>I'm Umer Majeed, a Ph.D. in Computer Science and Engineering, an AI engineer and full-stack Web3 developer, and CTO of InfiniteZero Foundation and Balkeum Labs. Watch the <a href="https://www.youtube.com/watch?v=9CdUWeeAO3A">full video version of this explainer</a> on <a href="https://www.youtube.com/@AIchainVerse">AIChainVerse on YouTube</a>. For the background, see <a href="https://www.youtube.com/watch?v=vsQ5_1qqY7A">crypto wallets</a> and <a href="https://www.youtube.com/watch?v=rd3XiTU-wEU">how Bitcoin works</a>, or read <a href="/blog/2026/11/11/who-checks-a-bitcoin-payment/">Who Checks a Bitcoin Payment When There's No Bank?</a> I post shorter "What is…?" explainers on <a href="https://www.facebook.com/aichainverse">Facebook</a>. If this helped, follow me here for the next one.</em></p>
+
+<p><em>Sources: Wikipedia, 2026 Binance hack (timeline compiled from CNBC, BBC, Reuters, NYT, FT and The Guardian); The Hacker News, "Binance reveals how fake job interviews and AI tool abuse led to the theft"; SecurityWeek, "Rigged coding assignment, abused AI tool opened path to $6 billion Binance heist"; Axios, "Binance's $6.3 billion hack began with a fake job"; BleepingComputer, "FBI links $6.3 billion Binance crypto heist to North Korean hackers"; Infosecurity Magazine, "FBI attributes Binance heist to North Korea's TraderTraitor"; DEV Community, "How EIP-7702 delegation emptied a hot wallet" (on-chain analysis); CoinDesk, "North Korean hackers are creating memecoins to wash loot from the Binance hack" (Elliptic); NPR, "How Binance suffered a $6.3 billion cyber heist"; The Block, "How North Korea hacked Axie Infinity's Ronin"; EIP-7702 specification. Facts checked 11–12 November 2026.</em></p>

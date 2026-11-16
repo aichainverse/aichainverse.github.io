@@ -1,18 +1,19 @@
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">{{ t.skip }}</a>
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} home">
+    <a class="brand" href="{{ base | append: '/' | relative_url }}" aria-label="{{ site.title }} {{ t.home }}">
       <img src="{{ site.logo | relative_url }}" alt="" width="40" height="40">
-      <span>AIChain<b>verse</b></span>
+      <span dir="ltr">AIChain<b>verse</b></span>
     </a>
     <nav aria-label="Primary">
       <ul class="nav-links">
         {%- for item in site.nav -%}
           {%- assign current = false -%}
           {%- assign prefixes = item.sections | default: "" | split: "," | push: item.url -%}
-          {%- for pre in prefixes -%}{%- assign pre = pre | strip -%}{%- if pre != "" and page.url contains pre -%}{%- assign head = page.url | slice: 0, pre.size -%}{%- if head == pre -%}{%- assign current = true -%}{%- endif -%}{%- endif -%}{%- endfor %}
-        <li><a href="{{ item.url | relative_url }}"{% if current %} aria-current="page"{% endif %}>{{ item.title }}</a></li>
+          {%- for pre in prefixes -%}{%- assign pre = pre | strip -%}{%- if pre != "" -%}{%- assign pre = base | append: pre -%}{%- assign head = page.url | slice: 0, pre.size -%}{%- if head == pre -%}{%- assign current = true -%}{%- endif -%}{%- endif -%}{%- endfor %}
+        <li><a href="{{ base | append: item.url | relative_url }}"{% if current %} aria-current="page"{% endif %}>{{ t.nav[item.key] }}</a></li>
         {%- endfor %}
+        <li><a class="lang-switch" href="{{ alt_url | relative_url }}" lang="{{ other.code }}" hreflang="{{ other.code }}">{{ other.name }}</a></li>
       </ul>
     </nav>
   </div>

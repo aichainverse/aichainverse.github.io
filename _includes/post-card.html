@@ -1,6 +1,9 @@
 <a class="card post-card" href="{{ include.post.url | relative_url }}">
-  <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: "%b %-d, %Y" }}</time>
-  <h3>{{ include.post.title }}</h3>
-  <p>{{ include.post.description | default: include.post.excerpt | strip_html | truncatewords: 28 }}</p>
-  <span class="more">Read →</span>
+  {%- if include.post.image %}<img src="{{ include.post.image | relative_url }}" alt="" loading="lazy" width="1280" height="720">{% endif %}
+  <div class="post-card-body">
+    <time datetime="{{ include.post.date | date_to_xmlschema }}">{% include date.html date=include.post.date style="short" %}</time>
+    <h3>{{ include.post.title }}</h3>
+    <p>{{ include.post.description | default: include.post.excerpt | strip_html | truncatewords: 28 }}</p>
+    <span class="more">{{ t.read }}</span>
+  </div>
 </a>

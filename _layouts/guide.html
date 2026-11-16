@@ -1,32 +1,33 @@
 ---
 layout: default
 ---
+{%- include lang.html -%}
 {%- assign words = content | number_of_words -%}
 {%- assign minutes = words | divided_by: 200 | at_least: 1 -%}
 {%- comment -%} Shared by guides and tutorials: links and prev/next stay within the page's own collection. {%- endcomment -%}
-{%- assign coll_url = '/' | append: page.collection | append: '/' -%}
+{%- assign coll_url = base | append: '/' | append: page.collection | append: '/' -%}
 <article class="section prose-page guide">
   <div class="wrap">
     <header class="guide-head narrow">
-      <p class="eyebrow"><a href="{{ coll_url | relative_url }}">{{ page.collection | capitalize }}</a>{% if page.level %} · {{ page.level }}{% endif %}{% if page.duration %} · {{ page.duration }}{% endif %}</p>
+      <p class="eyebrow"><a href="{{ coll_url | relative_url }}">{{ t.sections[page.collection] | default: page.collection }}</a>{% if page.level %} · {{ page.level }}{% endif %}{% if page.duration %} · {{ page.duration }}{% endif %}</p>
       <h1>{{ page.title }}</h1>
       {% if page.description %}<p class="lede">{{ page.description }}</p>{% endif %}
       <p class="meta">
-        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
-        {% if page.updated %} · Updated <time datetime="{{ page.updated | date_to_xmlschema }}">{{ page.updated | date: "%B %-d, %Y" }}</time>{% endif %}
-        · {{ minutes }} min read
+        <time datetime="{{ page.date | date_to_xmlschema }}">{% include date.html date=page.date %}</time>
+        {% if page.updated %} · {{ t.updated }} <time datetime="{{ page.updated | date_to_xmlschema }}">{% include date.html date=page.updated %}</time>{% endif %}
+        · {{ minutes }} {{ t.min_read }}
       </p>
       {%- if page.prerequisites %}
       <div class="prereqs card">
-        <p class="toc-title">Prerequisites</p>
+        <p class="toc-title">{{ t.prerequisites }}</p>
         <ul>{% for p in page.prerequisites %}<li>{{ p | markdownify | remove: '<p>' | remove: '</p>' | strip }}</li>{% endfor %}</ul>
       </div>
       {%- endif %}
     </header>
 
     <div class="guide-body">
-      <aside class="toc" aria-label="On this page" hidden>
-        <p class="toc-title">On this page</p>
+      <aside class="toc" aria-label="{{ t.on_this_page }}" hidden>
+        <p class="toc-title">{{ t.on_this_page }}</p>
         <ol id="toc-list"></ol>
       </aside>
       <div class="prose" id="guide-content">
@@ -34,16 +35,16 @@ layout: default
       </div>
     </div>
 
-    {%- assign guides = site[page.collection] | sort: "date" -%}
+    {%- assign guides = site[page.collection] | where: "lang", lang | sort: "date" -%}
     {%- for g in guides -%}
       {%- if g.url == page.url -%}
         {%- assign prev_i = forloop.index0 | minus: 1 -%}
         {%- assign next_i = forloop.index0 | plus: 1 -%}
       {%- endif -%}
     {%- endfor -%}
-    <nav class="pager" aria-label="More {{ page.collection }}">
-      {%- if prev_i >= 0 %}{% assign g = guides[prev_i] %}<a class="card" href="{{ g.url | relative_url }}"><span>← Previous</span>{{ g.title }}</a>{% else %}<span></span>{% endif -%}
-      {%- if next_i < guides.size %}{% assign g = guides[next_i] %}<a class="card next" href="{{ g.url | relative_url }}"><span>Next →</span>{{ g.title }}</a>{% endif -%}
+    <nav class="pager" aria-label="{{ t.sections[page.collection] | default: page.collection }}">
+      {%- if prev_i >= 0 %}{% assign g = guides[prev_i] %}<a class="card" href="{{ g.url | relative_url }}"><span>{{ t.previous }}</span>{{ g.title }}</a>{% else %}<span></span>{% endif -%}
+      {%- if next_i < guides.size %}{% assign g = guides[next_i] %}<a class="card next" href="{{ g.url | relative_url }}"><span>{{ t.next }}</span>{{ g.title }}</a>{% endif -%}
     </nav>
   </div>
 </article>

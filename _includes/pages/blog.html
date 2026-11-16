@@ -1,0 +1,14 @@
+{%- include lang.html -%}
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>{{ t.nav.blog }}</h1>
+    <div class="post-list">
+      {%- assign posts = site.posts | where: "lang", lang -%}
+      {%- for post in posts %}
+      {% include post-card.html post=post %}
+      {%- else %}
+      <p class="muted">{{ t.empty.blog }}</p>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

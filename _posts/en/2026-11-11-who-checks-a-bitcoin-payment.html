@@ -1,0 +1,303 @@
+---
+title: "Who Checks a Bitcoin Payment When There's No Bank?"
+description: "No company runs Bitcoin and no bank approves it. Here's what actually happens in the ten minutes after you tap \"send\"."
+date: 2026-11-11 09:00:00 +0500
+image: /assets/img/blog/who-checks-a-bitcoin-payment/btc-cover.jpg
+image_alt: "AIChainVerse cover: No bank. No boss. Bitcoin. Sign, mine, chain."
+tags: ["Bitcoin", "Cryptocurrency", "Blockchain", "Crypto", "Technology"]
+---
+<p>Bitcoin is worth about 1.5 trillion dollars, and nobody is in charge of it. There's no Bitcoin headquarters, no customer service line and no central server anyone can switch off. Yet every day, hundreds of thousands of payments go through, and none of them is approved by a bank.</p>
+
+<p>That raises three questions most people never get a straight answer to. <strong>Who checks that you really have the money? What stops you from spending the same money twice? And where do the "coins" actually go?</strong></p>
+
+<p>I'll answer all three by following one payment from a phone in Lahore to a phone in Dubai, step by step. There's a full video version below if you'd rather watch.</p>
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/rd3XiTU-wEU" title="YouTube video" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+
+<h2>Meet Ayesha</h2>
+
+<p>Ayesha is a graphic designer in Lahore. Her cousin Omar, who works in Dubai, sent her a laptop, and she owes him about 150 dollars. Instead of a bank transfer, she opens a Bitcoin wallet app, pastes Omar's address, types <strong>0.002 BTC</strong> (about 150 dollars at roughly 76,000 dollars per bitcoin, the price in early November 2026) and taps send.</p>
+
+<p>About ten minutes later, Omar's wallet shows the payment with "1 confirmation". No bank was involved at any point. (Ayesha is a teaching example and her amounts are illustrative, but every step is exactly what the real network does.)</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-ayesha.jpg" alt="From the video: 'Meet Ayesha.' Omar in Dubai holds his phone; cards read 'Ayesha (Lahore) owes her cousin Omar (Dubai) $150 for a laptop', '0.002 BTC', and 'About ten minutes later, Omar's wallet: RECEIVED, 1 confirmation'." width="1600" height="900" loading="lazy">
+<figcaption>One payment, two cities, no bank. We'll follow it all the way.</figcaption>
+</figure>
+
+<h2>Three ideas first</h2>
+
+<p><strong>A ledger.</strong> A ledger is just a record of who paid whom, like the notebook a shopkeeper keeps of what each customer owes. Your bank keeps one for you, and you trust it to keep it right. On 31 October 2008, someone using the name Satoshi Nakamoto published a nine-page paper describing a ledger that <strong>no single keeper controls</strong>. That's Bitcoin.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-ledger.jpg" alt="From the video: '1 · A ledger with no keeper.' A glowing open ledger book surrounded by many computer desks; labels 'The ledger' and 'A copy in every computer'; '31 October 2008, Satoshi Nakamoto'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p><strong>The double-spending problem.</strong> Digital things can be copied. You can send the same photo to a thousand people. So what stops someone from copying a digital coin and paying two people with it? Banks solve this by holding the only official copy of the ledger. Bitcoin solves it the other way round: <strong>everyone gets a copy</strong>, plus a strict shared rule for agreeing which version is true.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-double-spend.jpg" alt="From the video: 'The copying problem.' A photo can be copied a thousand times, and digital cash could be too: DOUBLE SPENDING. The banks' answer: one copy of the ledger, kept by the bank. Bitcoin's answer: everyone gets a copy, and a strict rule for agreeing which version is true." width="1600" height="900" loading="lazy">
+<figcaption>Banks keep one copy. Bitcoin gives everyone a copy, plus a rule for agreeing.</figcaption>
+</figure>
+
+<p><strong>A hash.</strong> A hash function turns any data into a short, fixed-length code, like a fingerprint. The same data always gives the same fingerprint, but change a single character and the fingerprint changes completely. You can't work backwards from it. Bitcoin uses one called SHA-256. (My <a href="https://www.youtube.com/watch?v=-HkFdBWGqNU">Merkle tree explainer</a> goes deep on hashes.)</p>
+
+<h2>Bitcoin in one sentence</h2>
+
+<blockquote>Bitcoin is a shared ledger, copied on thousands of computers around the world, where payments are signed with secret keys, bundled into blocks by miners who compete with computing power, and checked by everyone, so no single person or company is in charge.</blockquote>
+
+<p>Picture a notebook the whole town keeps a copy of. Anyone can propose a new line. Every new page has to follow the rules everyone agreed on, and once a page is added, old pages can never be torn out.</p>
+
+<p>A small naming note: "Bitcoin" with a capital B usually means the network and its rules; "bitcoin" or BTC means the currency recorded in it.</p>
+
+<h2>Step 1: Keys, not accounts</h2>
+
+<p>Ayesha has no Bitcoin account with her name on it. When she installed her wallet, the app generated a <strong>private key</strong>, a secret number so large that guessing it is practically impossible. From it, the wallet calculated a <strong>public address</strong>, a string of letters and numbers she can share freely, like a mailbox number.</p>
+
+<p>Anyone can send bitcoin <em>to</em> an address. Only the matching private key can spend <em>from</em> it. Omar sent Ayesha his address once; she pasted it into her wallet. No bank details, no names.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-keys.jpg" alt="From the video: 'Keys, not accounts.' A golden key and a blue mailbox. Private key: a huge secret number; whoever holds it, spends. Public address: derived from the key, share it freely. Anyone can send TO the address; only the private key can SPEND from it." width="1600" height="900" loading="lazy">
+<figcaption>Share the address. Never share the key.</figcaption>
+</figure>
+
+<p>Notice what the wallet doesn't hold: coins. It holds the key (usually backed up as 12 or 24 recovery words). The coins, or more precisely the records of them, live in the shared ledger. I wrote a whole piece on that idea: <a href="/blog/2026/11/09/your-crypto-wallet-holds-zero-crypto/">Your Crypto Wallet Holds Zero Crypto</a>.</p>
+
+<h2>Step 2: Your "coins" are really banknotes</h2>
+
+<p>This is the part almost nobody explains, and it's the one that makes everything else click.</p>
+
+<p>A bank keeps one running balance per account. <strong>Bitcoin doesn't have balances.</strong> It tracks individual <strong>unspent transaction outputs</strong>, or <strong>UTXOs</strong>: unspent pieces of earlier payments, each locked to an address. The easiest picture is banknotes in a purse. Your "balance" is just the total of the notes your keys can unlock.</p>
+
+<p>Ayesha's wallet holds two notes: one of 0.0015 BTC from a client who paid her for a logo last month, and one of 0.0012 BTC. Together, 0.0027 BTC.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-notes.jpg" alt="From the video: 'Coins are really notes.' Two glowing orange notes. Unspent pieces of past payments, called OUTPUTS. Note 1: 0.0015 BTC. Note 2: 0.0012 BTC. Together: 0.0027 BTC." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>She wants to pay Omar 0.002 BTC, but a note can't be torn in half. So her wallet builds a transaction that <strong>spends both notes completely</strong> and <strong>creates new ones</strong>:</p>
+
+<ul>
+<li><strong>0.002 BTC</strong> to Omar's address</li>
+<li><strong>0.000695 BTC</strong> back to an address of her own, as <strong>change</strong></li>
+<li>the tiny gap left over, <strong>0.000005 BTC</strong>, isn't assigned to anyone. It becomes the <strong>fee</strong> for whoever records the payment.</li>
+</ul>
+
+<p>Check the maths: 0.0027 − 0.002 − 0.000695 = 0.000005 BTC. That's 500 <strong>satoshis</strong>. One satoshi ("sat") is the smallest unit, one hundred-millionth of a bitcoin.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-change.jpg" alt="From the video: 'Notes can't be torn in half.' IN: 0.0015 + 0.0012 = 0.0027 BTC. OUT: 0.002 BTC to Omar's mailbox. CHANGE: 0.000695 BTC back to Ayesha's purse. FEE: 0.000005 BTC (500 sats). 'The tiny gap left over is the fee.'" width="1600" height="900" loading="lazy">
+<figcaption>Spend whole notes, get change back, and the gap is the fee. Exactly like cash.</figcaption>
+</figure>
+
+<h2>Step 3: Sign and broadcast</h2>
+
+<p>The wallet now <strong>signs</strong> the transaction with Ayesha's private key. A digital signature proves the owner of those notes approved <em>this exact</em> payment, without revealing the key. Change a single digit, the amount or the address, and the signature no longer matches, so the transaction is invalid.</p>
+
+<p>Then the wallet sends the signed transaction to a few Bitcoin <strong>nodes</strong>: computers that keep a full copy of the ledger and enforce the rules. Each node checks it and passes it on, and within seconds it has spread across the network.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-sign.jpg" alt="From the video: 'Sign and broadcast.' A sealed envelope over rows of glowing computers. The signature proves the owner approved THIS exact payment, without revealing the key. Change one digit and the signature no longer matches. The signed payment goes out to the nodes, full copies of the ledger." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>Every node runs the same checks:</p>
+
+<ol>
+<li>Is the signature valid for those notes?</li>
+<li>Do those notes really exist in the ledger?</li>
+<li>Have they already been spent?</li>
+<li>Do the outputs add up to no more than the inputs?</li>
+</ol>
+
+<p>Fail any check and the transaction is dropped. Pass, and it waits in the <strong>mempool</strong> (memory pool), the waiting room of valid payments that aren't in a block yet.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-mempool.jpg" alt="From the video: 'Every node checks the same things.' Ticks: Is the signature valid? Do those notes really exist? Have they already been spent? If it passes, it waits in the MEMPOOL, the waiting room. Payment size about 200 bytes; 500 sats at 2.5 sats per byte, about $0.40." width="1600" height="900" loading="lazy">
+<figcaption>Bitcoin fees are priced by size in bytes, not by how much you send.</figcaption>
+</figure>
+
+<p>A detail that surprises people: Bitcoin fees are priced by the <strong>size of the transaction in bytes, not by the amount</strong>. Ayesha's (two notes in, two out) is about 200 virtual bytes, so 500 sats works out to about 2.5 sats per byte, roughly 40 cents. That's a normal quiet-day rate in 2026. On busy days the rate can jump much higher, because space in every block is limited. (Ethereum prices its fees differently; my <a href="https://www.youtube.com/watch?v=VKSpfYWSibc">gas fees explainer</a> covers that side.)</p>
+
+<h2>Step 4: Miners build a block (proof of work)</h2>
+
+<p><strong>Miners</strong> are computers that pick transactions from the mempool, usually the best-paying ones first, and pack them into a candidate <strong>block</strong>. To add their block to the chain, they have to win a guessing game.</p>
+
+<p>The miner runs the block's header (a short summary that includes a fingerprint of all its transactions) through SHA-256 over and over, changing one number called the <strong>nonce</strong> each time, until the resulting fingerprint falls below a <strong>target</strong>. In practice, that means it starts with a long run of zeros. There's no shortcut. It's pure trial and error.</p>
+
+<p>How much trial and error? Worldwide, miners make around <strong>a billion trillion guesses every second</strong>. The network's total hash rate first passed one zettahash per second (10²¹ hashes) in September 2025.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-proof-of-work.jpg" alt="From the video: 'The race, worldwide.' 1,000,000,000,000,000,000,000 guesses every second. Finding is hard; checking is easy; that's PROOF OF WORK. Every node checks it instantly. The winner's reward: 3.125 BTC plus all the fees, including Ayesha's 500 sats." width="1600" height="900" loading="lazy">
+<figcaption>Finding the answer takes the whole world's computers. Checking it takes one hash.</figcaption>
+</figure>
+
+<p>The first miner to find a valid fingerprint broadcasts the block, and every node can verify it with a single hash, instantly. <strong>Finding is hard; checking is easy.</strong> That asymmetry is proof of work.</p>
+
+<p>The winner is paid twice: newly created bitcoin (the <strong>block subsidy</strong>, currently 3.125 BTC) plus every fee in the block, including Ayesha's 500 sats.</p>
+
+<p><strong>The thermostat.</strong> Every 2,016 blocks, about two weeks, the network automatically adjusts the <strong>difficulty</strong>, so a block is found about every ten minutes on average, whether a thousand machines are mining or a million. That's why Omar waited about ten minutes, not ten seconds.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-difficulty.jpg" alt="From the video: 'Why ten minutes?' Hourglasses and clockwork. Every 2,016 blocks (about two weeks) the network adjusts the difficulty. A block every ≈ 10 minutes, whether a thousand machines are mining or a million." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>Mining has a whole story of its own, with the machines, the energy and the economics. The full race is in my <a href="https://www.youtube.com/watch?v=PgZ5K0AA3G0">crypto mining explainer</a>.</p>
+
+<h2>Step 5: The chain, and how double spending is stopped</h2>
+
+<p>Each block contains the fingerprint of the block before it. So the blocks form a <strong>chain</strong>, all the way back to the first one, the genesis block, mined on 3 January 2009. Satoshi embedded a newspaper headline in it: <em>"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks."</em></p>
+
+<p>Change one old payment and that block's fingerprint changes, which breaks its link to every block after it. To fake history, an attacker would have to redo the proof of work for that block and every block since, and overtake the honest network. That means controlling more computing power than the rest of the world's miners combined (the famous "51% attack").</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-chain.jpg" alt="From the video: 'The chain.' Heavy golden chain links. Each block contains the fingerprint of the block before it. The first block: 3 January 2009. Change one old payment and its fingerprint changes, which breaks the link to every block after it. To fake history you'd have to redo all that work, faster than the rest of the world combined." width="1600" height="900" loading="lazy">
+<figcaption>Rewriting one old page means redoing every page after it, faster than everyone else.</figcaption>
+</figure>
+
+<p>Now back to the double-spending question. Suppose Ayesha tried to send the same two notes to Omar and to someone else at the same moment. Both transactions are valid on their own, but they conflict. Nodes accept <strong>whichever one gets into a block first</strong> and reject the other, because its notes are already spent.</p>
+
+<p>And if two miners find blocks at almost the same moment? Nodes briefly see two branches, then follow the one with the <strong>most accumulated work</strong>. The other branch is dropped within a block or two.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-first-wins.jpg" alt="From the video: 'How double spending is stopped.' Whichever version gets into a block FIRST is accepted. The other is rejected: that money is already spent. If two miners finish at almost the same moment, nodes follow the chain with the most work behind it. Labels: 'Most work: wins', 'Dropped', 'Double spend'." width="1600" height="900" loading="lazy">
+</figure>
+
+<p><strong>Confirmations.</strong> When Ayesha's payment lands in a block, it has 1 confirmation. Each block mined on top adds one more and makes it exponentially harder to undo. Six confirmations (about an hour) is the classic rule of thumb for large amounts. For 150 dollars between cousins, one is plenty.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-confirmations.jpg" alt="From the video: 'Confirmations.' Ayesha's payment sealed in a block on the chain, with six green lights. 1 means the payment is in the ledger; 6 is about an hour, the classic rule for large amounts." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Step 6: The supply is written in code</h2>
+
+<p>New bitcoin only enters circulation as the block subsidy. Every 210,000 blocks, about every four years, that subsidy is cut in half: the <strong>halving</strong>.</p>
+
+<ul>
+<li>2009: 50 BTC per block</li>
+<li>2012: 25</li>
+<li>2016: 12.5</li>
+<li>2020: 6.25</li>
+<li>April 2024: 3.125</li>
+<li>Next, around 2028: about 1.5625</li>
+</ul>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-halving.jpg" alt="From the video: 'The supply is written in code.' A jar filling with glowing coins. Every 210,000 blocks (about every four years) the reward is cut in half: the HALVING. 21,000,000 is the cap. Bars: 2009 50, 2012 25, 2016 12.5, 2020 6.25, 2024 3.125." width="1600" height="900" loading="lazy">
+</figure>
+
+<p>Add up all those shrinking rewards and the total approaches, but never exceeds, <strong>21 million BTC</strong>. About 20.1 million had been issued by early November 2026 (the 20 millionth was mined in March 2026), and the rest trickles out ever more slowly until roughly 2140. After that, miners would earn fees alone.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-cap.jpg" alt="From the video: '21 MILLION, the cap.' Mined so far: about 20.1 million of 21 million (95.7%). The rest comes out more and more slowly, until roughly 2140. No central bank can print more." width="1600" height="900" loading="lazy">
+<figcaption>About 95.7% is already mined. The last fraction takes more than a century.</figcaption>
+</figure>
+
+<p>No central bank can print more. The cap is a rule every node enforces: a block that pays its miner too much is simply rejected. To change it, the people running nodes would all have to choose to run different rules, and the value of their own coins gives them strong reasons not to.</p>
+
+<h2>The whole journey</h2>
+
+<p>Ayesha's wallet signs a transaction that spends her two notes and creates new ones: 0.002 BTC for Omar, 0.000695 BTC change for herself, and a 500-sat fee. Nodes check the signature and that the notes are unspent, and hold it in the mempool. A miner includes it in a block and wins the proof-of-work race. Every node checks the block and adds it to its copy of the chain, and Omar sees one confirmation about ten minutes after Ayesha tapped send.</p>
+
+<blockquote>Keys sign it. Nodes check it. Miners order it. The chain remembers.</blockquote>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-journey.jpg" alt="From the video: 'The whole journey.' Four cards: SIGN (her wallet signs the payment, spending two old notes, making new ones), CHECK (nodes check it and hold it in the waiting room), ORDER (a miner wins the race and puts it in a block), REMEMBER (every node checks the block, and the chain grows). 'Keys sign it. Nodes check it. Miners order it. The chain remembers.'" width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Three myths</h2>
+
+<p><strong>"Bitcoin is anonymous."</strong> It's <strong>pseudonymous</strong>. Every transaction ever made is public and permanent. Addresses carry no names, but once an address is linked to a person, for example by an exchange that verified their ID, their payment history can be traced. Blockchain analysis is a whole industry.</p>
+
+<p><strong>"Bitcoin gets hacked all the time."</strong> The network's ledger has never been rewritten by an attacker. What gets hacked are exchanges, apps and people's wallets. The most famous case is Mt. Gox, the exchange that collapsed in 2014 after losing about 850,000 BTC.</p>
+
+<p><strong>"Satoshi, or some company, controls Bitcoin."</strong> No one does. Satoshi went quiet in 2011, and the coins believed to be Satoshi's, an estimated million or so, have never moved. Rules change only when node operators choose to run new software, which is why Bitcoin changes slowly and conservatively.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-myths.jpg" alt="From the video: 'Three myths.' Myth 1, 'Bitcoin is anonymous': reality, it's pseudonymous; every payment ever made is public, forever, and once an address is linked to you, your history can be traced. Myth 2, 'Bitcoin gets hacked all the time': reality, the network itself has never been rewritten; what gets hacked are exchanges and wallets, like Mt. Gox (2014), which lost about 850,000 bitcoin." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>Where Bitcoin is used today</h2>
+
+<ul>
+<li><strong>The first famous purchase.</strong> On 22 May 2010, programmer Laszlo Hanyecz paid 10,000 BTC for two pizzas, now celebrated every year as Bitcoin Pizza Day.</li>
+<li><strong>Spot Bitcoin ETFs.</strong> Since January 2024, US exchange-traded funds that hold bitcoin directly let people get exposure through an ordinary brokerage account. By early October 2026 they held about 1.29 million BTC between them, with BlackRock's IBIT holding about 806,000.</li>
+<li><strong>Company treasuries.</strong> Strategy (formerly MicroStrategy) holds more than 800,000 BTC.</li>
+<li><strong>Countries.</strong> El Salvador made bitcoin legal tender in 2021, then made accepting it optional in January 2025 as part of an IMF loan deal. In March 2025, a US executive order created a Strategic Bitcoin Reserve from coins the government had seized.</li>
+<li><strong>Faster payments.</strong> The Lightning Network is a second layer where people open payment channels and send small amounts almost instantly and very cheaply, settling the net result on the main chain later.</li>
+</ul>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-used-today.jpg" alt="From the video: 'Where is Bitcoin used today?' A woman at a laptop. May 2010: a programmer paid 10,000 BTC for two pizzas. Since January 2024, US spot Bitcoin ETFs let people buy it through a normal brokerage account. ETFs hold about 1.3 million BTC; one company (Strategy) holds 800,000+." width="1600" height="900" loading="lazy">
+</figure>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-el-salvador.jpg" alt="From the video: a beach-front market stall with a card terminal. El Salvador: legal tender in 2021, then accepting it optional in 2025, as part of an IMF loan deal. United States: March 2025, a strategic Bitcoin reserve from coins the government had seized. Everyday payments: the Lightning Network, send instantly, settle on the main chain later." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>The honest limits</h2>
+
+<ul>
+<li><strong>Throughput.</strong> The main chain handles only about seven transactions per second. When demand spikes, fees rise.</li>
+<li><strong>Price swings.</strong> In early November 2026 bitcoin was trading near 76,000 dollars, about 40% below its October 2025 all-time high. Big swings are normal.</li>
+<li><strong>Energy.</strong> Proof of work uses a lot of electricity: about 138 TWh a year in 2025 by Cambridge's estimate, roughly 0.5% of the world's electricity, with just over half from sustainable sources.</li>
+<li><strong>No customer support.</strong> A payment to the wrong address can't be reversed, and if you lose both your key and your backup, the coins are gone. Analysts estimate millions of bitcoin are already permanently lost.</li>
+<li><strong>Scams.</strong> Fake giveaways, fake investment platforms and fake "support" agents are everywhere.</li>
+<li><strong>The 51% attack.</strong> In theory, whoever controls most of the mining power could reorder recent blocks. On Bitcoin today that would take enormous hardware and energy, which is why it hasn't happened.</li>
+</ul>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-limits.jpg" alt="From the video: 'The honest limits.' Envelopes queuing at a narrow gate under an hourglass. Speed: about 7 payments per second on the main chain. Price swings: about $76,000 in early November 2026, about 40% below its October 2025 peak. Mining energy: about 0.5% of the world's electricity. Busy days push fees up." width="1600" height="900" loading="lazy">
+</figure>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-no-support.jpg" alt="From the video: 'There is no customer support.' Ayesha looks worried at her desk. Send to a wrong address, or lose your key and your backup, and the coins are gone. Millions of bitcoin are already lost for good. Scams: fake giveaways, fake investment platforms, people pretending to be support. 'Nobody real will ever ask for your secret recovery words.'" width="1600" height="900" loading="lazy">
+<figcaption>Nobody real will ever ask for your recovery words. Not an exchange, not a wallet company, not me.</figcaption>
+</figure>
+
+<h2>A note from building on blockchains</h2>
+
+<p>Most of my smart-contract work is on Ethereum-style chains, which keep simple account balances. Coming from there, Bitcoin's "notes" model feels strange at first. But it has real engineering strengths. Each note can be validated on its own, so nodes can check transactions in parallel. And a wallet that sends change to a fresh address each time leaves a trail that's harder to follow.</p>
+
+<p>The cost lands on wallets. They have to decide which notes to spend (that's called <strong>coin selection</strong>), and a wallet full of tiny notes produces bigger transactions, which pay higher fees because fees are priced per byte. If you receive lots of small payments, consolidating your notes on a quiet, low-fee day is a habit worth having.</p>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-practice.jpg" alt="From the video: 'A note from building on blockchains.' Ethereum: accounts, keeps simple account balances. Bitcoin: notes, spends whole notes, like cash. Every note can be checked on its own, so the network can verify payments in parallel. A fresh change address each time is harder to trace. The cost: wallets must choose which notes to spend, and lots of tiny notes make a payment bigger and more expensive." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>What's next</h2>
+
+<p>These are trends, not promises:</p>
+
+<ul>
+<li><strong>Lightning and other layers</strong> keep growing for small, fast payments, so the main chain can stay a slower, final settlement layer.</li>
+<li><strong>The next halving</strong>, expected around 2028, cuts the block subsidy to about 1.5625 BTC, making fees a bigger share of miners' income over time.</li>
+<li><strong>Quantum preparation.</strong> A powerful enough quantum computer could one day break the signatures Bitcoin uses today. A proposal called <strong>BIP-360</strong> was merged into Bitcoin's improvement-proposal repository in February 2026 as a step toward quantum-resistant outputs. Merged means documented for discussion, not switched on, and developers disagree about how urgent the threat is.</li>
+</ul>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-next.jpg" alt="From the video: 'What's next: trends, not promises.' Lightning keeps growing for small, fast payments. The next halving (about 2028) cuts the reward to about 1.56 bitcoin. Quantum-ready signatures: BIP-360 added to the proposal list in February 2026, not switched on." width="1600" height="900" loading="lazy">
+</figure>
+
+<h2>The takeaway</h2>
+
+<ul>
+<li>Bitcoin is a shared ledger copied on thousands of computers, with no central keeper.</li>
+<li>Your wallet holds keys, not coins. Coins are unspent "notes" in the ledger, and payments spend whole notes and create change.</li>
+<li>Nodes check every payment. Miners order payments into blocks by winning a proof-of-work race, about every ten minutes.</li>
+<li>Blocks link by fingerprints, so rewriting history means out-working the whole world. That, plus "first in a block wins", stops double spending.</li>
+<li>The supply is capped at 21 million by a rule every node enforces, with the reward halving about every four years.</li>
+</ul>
+
+<figure>
+<img src="/assets/img/blog/who-checks-a-bitcoin-payment/btc-takeaway.jpg" alt="From the video: a glowing ledger book among computer desks. 'A shared ledger: keys sign, nodes check, miners order, the chain remembers. 21 million, fixed in code. Not financial advice.'" width="1600" height="900" loading="lazy">
+</figure>
+
+<p>So who checked Ayesha's payment? <strong>Everyone did.</strong> That's the whole trick: not trusting one keeper, but letting thousands of strangers check each other, with rules nobody can quietly change.</p>
+
+<p><em>This article is for education only and isn't financial advice. Ayesha's amounts are illustrative, worked out at about 76,000 dollars per bitcoin.</em></p>
+
+<hr>
+
+<p><em>I'm Umer Majeed, a Ph.D. in Computer Science and Engineering, an AI engineer and full-stack Web3 developer, and CTO of InfiniteZero Foundation and Balkeum Labs. Watch the <a href="https://www.youtube.com/watch?v=rd3XiTU-wEU">full video version of this explainer</a> on <a href="https://www.youtube.com/@AIchainVerse">AIChainVerse on YouTube</a>. For the rest of the story, see <a href="https://www.youtube.com/watch?v=vsQ5_1qqY7A">crypto wallets</a>, <a href="https://www.youtube.com/watch?v=-HkFdBWGqNU">Merkle trees</a>, <a href="https://www.youtube.com/watch?v=VKSpfYWSibc">gas fees</a> and <a href="https://www.youtube.com/watch?v=PgZ5K0AA3G0">crypto mining</a>. I post shorter "What is…?" explainers on <a href="https://www.facebook.com/aichainverse">Facebook</a>. If this helped, follow me here for the next one.</em></p>
+
+<p><em>Sources: Satoshi Nakamoto, "Bitcoin: A Peer-to-Peer Electronic Cash System" (2008); Bitcoin developer guide, transactions and the UTXO model; Axel Adler Jr., Bitcoin circulating supply; Macrotrends and 24/7 Wall St., BTC price (November 2026); Coinotag, spot Bitcoin ETF holdings at 1,000 days; The Block, Strategy holdings (October 2026); The Defiant, Bitcoin hash rate passes one zettahash; btc.network, Bitcoin fee report (May 2026); Cambridge Centre for Alternative Finance, Digital Mining Industry Report 2025; Cointelegraph, "What BIP-360 changes and what it does not". Facts checked 8 November 2026.</em></p>

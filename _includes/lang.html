@@ -1,0 +1,8 @@
+{%- comment -%}
+  Sets `lang` (en/ur), `t` (interface strings from _data/<lang>/strings.yml), `base` (URL prefix, "" or "/ur")
+  and `ldata` (this language's data files). Include it at the top of any layout or page that prints text or links.
+{%- endcomment -%}
+{%- assign lang = page.lang | default: site.lang | default: "en" -%}
+{%- assign ldata = site.data[lang] -%}
+{%- assign t = ldata.strings -%}
+{%- assign base = t.base | default: "" -%}

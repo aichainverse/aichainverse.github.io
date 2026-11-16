@@ -6,7 +6,10 @@ description: >-
   cryptocurrency, blockchain, AI, AI agents, and data science meet.
 url: https://aichainverse.github.io
 baseurl: ""
+# Default language. Each language has its strings and data in _data/<code>/ and its
+# pages under its own URL prefix: English at /, Urdu at /ur/ (see README "Languages").
 lang: en
+languages: [en, ur]
 timezone: Asia/Karachi
 
 logo: /assets/img/logo.png
@@ -28,13 +31,14 @@ links:
   tiktok: https://www.tiktok.com/@aichainverse
   github: https://github.com/aichainverse
 
-# Top navigation. An item is highlighted on its own URL and anything under it, plus any `sections` listed.
+# Top navigation. Labels come from `nav` in _data/<lang>/strings.yml, and URLs get the language prefix.
+# An item is highlighted on its own URL and anything under it, plus any `sections` listed.
 nav:
-  - { title: Videos, url: /videos/ }
-  - { title: Learn, url: /learn/, sections: "/guides/,/tutorials/,/career/,/glossary/,/resources/" }
-  - { title: Jobs, url: /jobs/ }
-  - { title: Blog, url: /blog/ }
-  - { title: About, url: /about/ }
+  - { key: videos, url: /videos/ }
+  - { key: learn, url: /learn/, sections: "/guides/,/tutorials/,/career/,/glossary/,/resources/" }
+  - { key: jobs, url: /jobs/ }
+  - { key: blog, url: /blog/ }
+  - { key: about, url: /about/ }
 
 permalink: /blog/:year/:month/:day/:title/
 
@@ -83,11 +87,25 @@ defaults:
   - scope: { path: "", type: career }
     values: { layout: career }
   - scope: { path: "" }
-    values: { layout: default }
+    values: { layout: default, lang: en }
+  # Urdu: pages live in ur/, content in the ur/ folder of each collection, published under /ur/.
+  - scope: { path: "ur" }
+    values: { lang: ur }
+  - scope: { path: "_posts/ur" }
+    values: { lang: ur, permalink: "/ur/blog/:year/:month/:day/:title/" }
+  - scope: { path: "_guides/ur" }
+    values: { lang: ur, permalink: "/ur/guides/:name/" }
+  - scope: { path: "_tutorials/ur" }
+    values: { lang: ur, permalink: "/ur/tutorials/:name/" }
+  - scope: { path: "_videos/ur" }
+    values: { lang: ur, permalink: "/ur/videos/:name/" }
+  - scope: { path: "_career/ur" }
+    values: { lang: ur, permalink: "/ur/career/:name/" }
 
 exclude:
   - README.md
   - Gemfile
   - Gemfile.lock
   - vendor
+  - scripts
   - .bundle

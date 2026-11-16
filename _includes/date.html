@@ -1,0 +1,8 @@
+{%- comment -%} Prints a date in the page's language. style: "long" (default), "short" or "day" (no year). {%- endcomment -%}
+{%- if t.months -%}
+  {%- assign m = include.date | date: "%-m" | minus: 1 -%}
+  {{- include.date | date: "%-d" }} {{ t.months[m] }}{% unless include.style == "day" %} {{ include.date | date: "%Y" }}{% endunless -%}
+{%- elsif include.style == "short" -%}{{ include.date | date: "%b %-d, %Y" }}
+{%- elsif include.style == "day" -%}{{ include.date | date: "%b %-d" }}
+{%- else -%}{{ include.date | date: "%B %-d, %Y" }}
+{%- endif -%}

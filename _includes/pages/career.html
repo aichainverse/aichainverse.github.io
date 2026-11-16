@@ -1,0 +1,21 @@
+{%- include lang.html -%}
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>{{ t.sections.career }}</h1>
+    <div class="post-list">
+      {%- assign roles = site.career | where: "lang", lang | sort: "title" -%}
+      {%- for r in roles %}
+      <a class="card post-card" href="{{ r.url | relative_url }}">
+        <div class="post-card-body">
+          {% if r.role %}<span class="meta">{{ r.role }}</span>{% endif %}
+          <h3>{{ r.title }}</h3>
+          {% if r.description %}<p>{{ r.description }}</p>{% endif %}
+          <span class="more">{{ t.read }}</span>
+        </div>
+      </a>
+      {%- else %}
+      <p class="muted">{{ t.empty.career }}</p>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

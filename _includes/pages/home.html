@@ -1,0 +1,55 @@
+{%- include lang.html -%}
+<section class="hero" id="top">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <h1><span dir="ltr">{{ site.title }}</span></h1>
+      <p class="lede">{{ t.tagline | default: site.tagline }}</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="{{ site.links.youtube }}" target="_blank" rel="noopener">{% include icon.html name="youtube" %} YouTube</a>
+        <a class="btn btn-ghost" href="{{ site.links.facebook }}" target="_blank" rel="noopener">{% include icon.html name="facebook" %} Facebook</a>
+        <a class="btn btn-ghost" href="{{ site.links.tiktok }}" target="_blank" rel="noopener">{% include icon.html name="tiktok" %} TikTok</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- assign latest_video = site.videos | where: "lang", lang | sort: "date" | last -%}
+{%- if latest_video %}
+<section class="section home-block">
+  <div class="wrap">
+    <div class="block-head"><h2>{{ t.latest_video }}</h2><a href="{{ base | append: '/videos/' | relative_url }}">{{ t.all_videos }}</a></div>
+    <div class="video-grid">{% include video-card.html video=latest_video %}</div>
+  </div>
+</section>
+{%- endif %}
+
+{%- assign learn = site.guides | concat: site.tutorials | where: "lang", lang | sort: "date" | reverse -%}
+{%- if learn.size > 0 %}
+<section class="section home-block">
+  <div class="wrap">
+    <div class="block-head"><h2>{{ t.latest_learn | escape }}</h2><a href="{{ base | append: '/learn/' | relative_url }}">{{ t.learn_link }}</a></div>
+    <div class="post-list">{% for post in learn limit: 3 %}{% include post-card.html post=post %}{% endfor %}</div>
+  </div>
+</section>
+{%- endif %}
+
+{%- assign posts = site.posts | where: "lang", lang -%}
+{%- if posts.size > 0 %}
+<section class="section home-block">
+  <div class="wrap">
+    <div class="block-head"><h2>{{ t.latest_posts }}</h2><a href="{{ base | append: '/blog/' | relative_url }}">{{ t.blog_link }}</a></div>
+    <div class="post-list">{% for post in posts limit: 3 %}{% include post-card.html post=post %}{% endfor %}</div>
+  </div>
+</section>
+{%- endif %}
+
+{% include open-jobs.html %}
+{%- if open_jobs.size > 0 %}
+<section class="section home-block">
+  <div class="wrap">
+    <div class="block-head"><h2>{{ t.open_jobs }}</h2><a href="{{ base | append: '/jobs/' | relative_url }}">{{ t.all_jobs }}</a></div>
+    <ul class="job-list">{% for j in open_jobs limit: 3 %}{% include job-card.html job=j %}{% endfor %}</ul>
+  </div>
+</section>
+{%- endif %}

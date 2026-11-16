@@ -1,13 +1,38 @@
 ---
 title: About
 permalink: /about/
+description: Web3, crypto, blockchain, AI and data science, explained by someone who builds them.
 ---
+{%- include lang.html -%}
 <section class="section prose-page">
   <div class="wrap narrow">
-    <h1>About</h1>
+    <h1>{{ t.nav.about }}</h1>
+    <p class="lede">Web3, crypto, blockchain, AI and data science, explained by someone who builds them.</p>
     <div class="prose">
-      {%- comment -%} About text goes here. {%- endcomment -%}
-      <p>Created by <a href="https://umermjd11.github.io" target="_blank" rel="noopener">{{ site.author.name }}</a>.</p>
+      <p>AIChainVerse is where Web3, cryptocurrency, blockchain, AI, AI agents and data science meet, without the hype. This website is its home: the written explainers live here, next to the videos and short-form posts we publish on YouTube, Facebook and TikTok.</p>
+
+      <h2>Who's behind it</h2>
+      <p>I'm <a href="https://umermjd11.github.io" target="_blank" rel="noopener">Dr. {{ site.author.name }}</a>: AI engineer, Ph.D. in Computer Science &amp; Engineering (Kyung Hee University), published researcher with 900+ citations, and CTO of InfiniteZero Foundation and Balkeum Labs, where I lead the Decentralized Intelligence Network (DIN) protocol.</p>
+
+      <h2>What you'll find</h2>
+      <ul>
+        <li>🎓 Practical explainers, from Merkle trees and gas fees to LLMs, RAG and overfitting</li>
+        <li>📢 The latest news and updates</li>
+        <li>🚀 A look at the future of intelligent tech</li>
+      </ul>
+
+      <h2>Where to follow</h2>
+      <ul>
+        <li><a href="{{ '/blog/' | relative_url }}">Blog</a>: step-by-step articles, on this site</li>
+        <li><a href="{{ site.links.youtube }}" target="_blank" rel="noopener">YouTube</a>: full video explainers and Shorts, new every week</li>
+        <li><a href="{{ site.links.facebook }}" target="_blank" rel="noopener">Facebook</a>: "What is…?" explainer posts and reels</li>
+        <li><a href="{{ site.links.tiktok }}" target="_blank" rel="noopener">TikTok</a>: short videos</li>
+      </ul>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{{ site.links.subscribe }}" target="_blank" rel="noopener">{% include icon.html name="youtube" %} YouTube</a>
+      <a class="btn btn-ghost" href="{{ site.links.facebook }}" target="_blank" rel="noopener">{% include icon.html name="facebook" %} Facebook</a>
+      <a class="btn btn-ghost" href="{{ site.links.tiktok }}" target="_blank" rel="noopener">{% include icon.html name="tiktok" %} TikTok</a>
     </div>
   </div>
 </section>

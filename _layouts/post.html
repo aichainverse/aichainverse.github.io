@@ -1,13 +1,33 @@
 ---
 layout: default
 ---
+{%- include lang.html -%}
 <article class="section prose-page">
   <div class="wrap narrow">
-    <p class="eyebrow"><a href="{{ '/blog/' | relative_url }}">Blog</a> · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
+    <p class="eyebrow"><a href="{{ base | append: '/blog/' | relative_url }}">{{ t.nav.blog }}</a> · <time datetime="{{ page.date | date_to_xmlschema }}">{% include date.html date=page.date %}</time></p>
     <h1>{{ page.title }}</h1>
     {% if page.description %}<p class="lede">{{ page.description }}</p>{% endif %}
+    {%- if page.image and page.cover != false %}
+    <img class="post-cover" src="{{ page.image | relative_url }}" alt="{{ page.image_alt | escape }}" width="1280" height="720">
+    {%- endif %}
     <div class="prose">
       {{ content }}
     </div>
+    {%- if page.shorts %}
+    <section class="post-shorts">
+      <h2>{{ t.sections.shorts }}</h2>
+      <div class="short-thumbs">
+        {%- for s in page.shorts %}
+        <a class="card short-thumb" href="https://www.youtube.com/shorts/{{ s.youtube_id }}" target="_blank" rel="noopener">
+          <img src="{{ s.image | relative_url }}" alt="" loading="lazy" width="540" height="960">
+          <span>{{ s.title }}</span>
+        </a>
+        {%- endfor %}
+      </div>
+    </section>
+    {%- endif %}
+    {%- if page.tags.size > 0 %}
+    <ul class="chips">{% for tag in page.tags %}<li>{{ tag }}</li>{% endfor %}</ul>
+    {%- endif %}
   </div>
 </article>

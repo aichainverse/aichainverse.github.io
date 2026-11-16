@@ -1,0 +1,76 @@
+# English interface text. Every key here needs the same key in _data/ur/strings.yml.
+code: en
+name: English          # shown on the language switch
+dir: ltr
+base: ""               # URL prefix for this language
+other: ur              # language the switch points to
+# tagline: overrides `tagline` in _config.yml for this language
+
+nav:
+  videos: Videos
+  learn: Learn
+  jobs: Jobs
+  blog: Blog
+  about: About
+sections:
+  guides: Guides
+  tutorials: Tutorials
+  career: Career
+  glossary: Glossary
+  resources: Resources
+  shorts: Shorts
+units:
+  guides: [guide, guides]
+  tutorials: [tutorial, tutorials]
+  career: [role, roles]
+  glossary: [term, terms]
+  resources: [link, links]
+
+skip: Skip to content
+home: home
+read: Read →
+min_read: min read
+updated: Updated
+prerequisites: Prerequisites
+on_this_page: On this page
+previous: ← Previous
+next: Next →
+watch_on_youtube: Watch on YouTube →
+sources: Sources
+learn_next: Learn next
+learn_more: Learn more →
+created_by: Created by
+other_category: Other
+copy: Copy
+copied: Copied
+
+latest_video: Latest video
+all_videos: All videos →
+latest_learn: Latest guides & tutorials
+learn_link: Learn →
+latest_posts: Latest posts
+blog_link: Blog →
+open_jobs: Open jobs
+all_jobs: All jobs →
+
+remote: Remote
+posted: Posted
+all: All
+filter_by_tag: Filter by tag
+jump_to_letter: Jump to letter
+tiktok: TikTok
+youtube_shorts: YouTube Shorts
+
+empty:
+  videos: No videos yet.
+  guides: No guides yet.
+  tutorials: No tutorials yet.
+  career: No career guides yet.
+  glossary: No terms yet.
+  resources: No resources yet.
+  shorts: No shorts yet.
+  blog: No posts yet.
+  jobs: No open jobs right now.
+
+not_found: Page not found
+back_home: Back to home

@@ -1,0 +1,25 @@
+{%- include lang.html -%}
+{%- assign none = "" | split: "" -%}
+{%- assign n_guides = site.guides | where: "lang", lang | size -%}
+{%- assign n_tutorials = site.tutorials | where: "lang", lang | size -%}
+{%- assign n_career = site.career | where: "lang", lang | size -%}
+{%- assign n_glossary = ldata.glossary | default: none | size -%}
+{%- assign n_resources = ldata.resources | default: none | size -%}
+{%- assign names = "guides,tutorials,career,glossary,resources" | split: "," -%}
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>{{ t.nav.learn }}</h1>
+    <div class="hub">
+      {%- for name in names %}
+      {%- case name -%}
+        {%- when "guides" -%}{%- assign n = n_guides -%}
+        {%- when "tutorials" -%}{%- assign n = n_tutorials -%}
+        {%- when "career" -%}{%- assign n = n_career -%}
+        {%- when "glossary" -%}{%- assign n = n_glossary -%}
+        {%- else -%}{%- assign n = n_resources -%}
+      {%- endcase %}
+      <a class="card hub-card" href="{{ base | append: '/' | append: name | append: '/' | relative_url }}"><h3>{{ t.sections[name] }}</h3><span class="meta">{{ n }} {% if n == 1 %}{{ t.units[name][0] }}{% else %}{{ t.units[name][1] }}{% endif %}</span></a>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

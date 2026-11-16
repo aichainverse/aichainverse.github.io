@@ -1,0 +1,5 @@
+# Glossary terms, shown A–Z at /glossary/. Link to one with /glossary/#<id> (id defaults to the slugified term).
+# - term: Example term
+#   definition: One or two sentences. Markdown is allowed.
+#   id: example          # optional
+#   link: /guides/slug/  # optional "Learn more" link

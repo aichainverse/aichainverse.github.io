@@ -1,0 +1,5 @@
+# Short-form videos, newest first at /shorts/.
+# - platform: tiktok     # tiktok or youtube
+#   url: https://www.tiktok.com/@aichainverse/video/...
+#   title: Example short
+#   date: 2026-10-01

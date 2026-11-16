@@ -1,0 +1,204 @@
+---
+title: "Why Perfect AI Models Fail: Overfitting vs. Underfitting"
+description: "Off by one minute in testing, fifteen minutes with real customers. Nothing crashed. The model just learned the wrong thing."
+date: 2026-11-08 09:00:00 +0500
+image: /assets/img/blog/why-perfect-models-fail/ofit-cover.jpg
+image_alt: "AIChainVerse cover: Why perfect models fail. Overfitting vs Underfitting. Train: 1 min, Live: 15 min, with a memorized wiggly curve and a learned smooth line."
+tags: ["Machine Learning", "Data Science", "Artificial Intelligence", "Overfitting", "Deep Learning"]
+---
+<p>Hamza runs a small food-delivery startup in Lahore. He trains a model to predict how long each delivery will take, and the result looks incredible: on his past deliveries, it's off by just <strong>1 minute</strong> on average. He ships it on Friday.</p>
+
+<p>By Sunday, customers are furious. On new orders, the model is off by <strong>15 minutes</strong>.</p>
+
+<p>Nothing crashed. There's no bug. The model simply learned the wrong thing. (Hamza and his numbers are a made-up teaching example, but every data scientist has lived this weekend.)</p>
+
+<p>This is the most common way machine learning goes wrong, and once you see it, you'll spot it everywhere: in startups, in competitions, and in one of Google's most famous failures. I'll walk through the two ways every model fails, why fixing one can cause the other, and the three tools professionals use to find the sweet spot. There's a full video version below if you'd rather watch.</p>
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/yO4IpvofSVA" title="YouTube video" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+
+<h2>Three ideas first</h2>
+
+<p><strong>Training a model.</strong> A machine learning model is a function with adjustable numbers inside it, called <em>weights</em>. Training means showing it past examples and nudging those weights until its predictions get closer to the right answers. For Hamza, each example is one past delivery: the distance, the time of day, the weather, and how long it really took.</p>
+
+<p><strong>Training data and test data.</strong> You never grade a model only on the examples it studied. Hamza keeps 800 of his 1,000 past deliveries for training and locks the other 200 away as a <em>test set</em>. Think homework and the final exam: a student who saw the exam questions in advance proves nothing.</p>
+
+<p><strong>Error.</strong> How far off the predictions are. Hamza uses the average number of minutes the model is wrong by. Here's the key fact of this whole article: <strong>every model has two error numbers</strong>, its training error and its test error. The gap between them tells the story.</p>
+
+<h2>The one-sentence version</h2>
+
+<blockquote>Underfitting means a model is too simple to learn the real pattern. Overfitting means it's so flexible that it memorizes the noise along with the pattern.</blockquote>
+
+<p>Think of three students. One only skimmed the chapter titles, so they fail both the practice questions and the real exam: that's underfitting. Another memorized every practice answer word for word, so they score 100% on practice and fall apart the moment the exam rewords a question: that's overfitting. The goal is the third student, the one who understood the ideas.</p>
+
+<h2>Step 1: Every dataset holds a pattern and noise</h2>
+
+<p>Every dataset mixes two things. The <strong>pattern</strong> is the real, repeatable relationship: farther deliveries take longer, and rush hour is slower. The <strong>noise</strong> is random one-off stuff: one rider stopped to fix a flat tire, one customer didn't answer the door. That delay will never happen the same way again.</p>
+
+<p>A good model learns the pattern and ignores the noise. The catch: the model can't tell which is which. It only sees numbers. And some noise can never be predicted by any model, so there's a floor under the error that nobody gets below.</p>
+
+<h2>Step 2: Too simple (underfitting)</h2>
+
+<p>Hamza's first try is a straight line: every extra kilometre adds the same number of minutes. But real delivery times curve. Short trips are quick, then traffic and crossings pile up.</p>
+
+<p>The result: <strong>12 minutes</strong> of training error and <strong>13 minutes</strong> of test error. Both high, and close together. That's the signature of underfitting: the model is wrong in the same way everywhere, even on data it has already seen.</p>
+
+<figure>
+<img src="/assets/img/blog/why-perfect-models-fail/ofit-underfit.jpg" alt="From the video: 'Too simple: underfitting.' A straight purple line through curved delivery data; training error 12 min, test error 13 min; 'More data won't bend a straight line'." width="1600" height="900" loading="lazy">
+<figcaption>A straight line through a curved world: wrong on old and new data alike.</figcaption>
+</figure>
+
+<p>And more data won't help. A straight line stays a straight line whether it sees a thousand deliveries or a million. The fixes are a more flexible model, better features (like adding time of day), or longer training.</p>
+
+<h2>Step 3: Too flexible (overfitting)</h2>
+
+<p>So Hamza goes big: a huge model with thousands of adjustable weights. Its curve bends through every single training point, including the flat tire and the unanswered door.</p>
+
+<p>The result: <strong>1 minute</strong> of training error and <strong>15 minutes</strong> of test error. That's the signature of overfitting: very low training error, much higher test error, and a big gap between them. Worse, on new orders this "star" model is even less useful than the humble straight line.</p>
+
+<figure>
+<img src="/assets/img/blog/why-perfect-models-fail/ofit-overfit.jpg" alt="From the video: 'Too flexible: overfitting.' A wiggly purple curve that bends through every point; training error 1 min, test error 15 min; 'It memorized the noise'." width="1600" height="900" loading="lazy">
+<figcaption>It memorized the noise. Perfect on the past, lost on the future.</figcaption>
+</figure>
+
+<h2>Step 4: Bias and variance</h2>
+
+<p>Two words from statistics explain both failures.</p>
+
+<p><strong>Bias</strong> is error from wrong assumptions: a too-simple model misses in the same direction every time. <strong>Variance</strong> is error from being too sensitive to the particular data it saw: train a too-flexible model on a slightly different set of deliveries and you get a very different model.</p>
+
+<p>Picture an archer. High bias: the arrows land in a tight group, but in the wrong spot. High variance: the arrows land all over the board.</p>
+
+<figure>
+<img src="/assets/img/blog/why-perfect-models-fail/ofit-bias-variance.jpg" alt="From the video: 'Bias and variance.' Two targets: one with arrows tightly grouped off-centre (high bias, our straight line), one with arrows scattered (high variance, our huge model)." width="1600" height="900" loading="lazy">
+<figcaption>High bias: consistently wrong. High variance: wrong in a different way every time.</figcaption>
+</figure>
+
+<p>The average error on new data breaks into three pieces:</p>
+
+<pre>Expected error = bias² + variance + irreducible noise</pre>
+
+<p>In words: how wrong your approach is, plus how jumpy it is, plus the unpredictable floor from Step 1. As a model gets more complex, bias usually falls and variance usually rises, so the test error traces a <strong>U shape</strong>. The bottom of that U is the sweet spot.</p>
+
+<figure>
+<img src="/assets/img/blog/why-perfect-models-fail/ofit-u-curve.jpg" alt="From the video: 'The U-shaped curve.' Training error keeps falling with model complexity, test error falls then rises; the sweet spot at 6 and 7 minutes, above the noise floor." width="1600" height="900" loading="lazy">
+<figcaption>Training error keeps falling. Test error doesn't. Aim for the bottom of the U.</figcaption>
+</figure>
+
+<p>Hamza finds a medium model: <strong>6 minutes</strong> on training, <strong>7 minutes</strong> on test. Its training score looks worse than the 1-minute model's, but it's the only one that works on real customers. The goal was never zero training error. The goal is the lowest error on new data.</p>
+
+<p>If you want the archer idea in under two minutes, it's the whole point of this Short:</p>
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/dcKjXW3A4Jc" title="YouTube video" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+
+<h2>Step 5: Cross-validation, five quizzes instead of one exam</h2>
+
+<p>There's a trap. If Hamza keeps checking his models against the test set and keeps picking the winner, the test set quietly becomes more homework. He's started fitting the exam. So the test set stays locked until the very end.</p>
+
+<p><strong>Cross-validation</strong> solves this. Using only the 800 training deliveries, Hamza splits them into 5 equal parts called <em>folds</em>. He trains on 4 and checks on the fifth, then repeats until every fold has had its turn, and averages the scores.</p>
+
+<p>His medium model scores 6.8, 7.2, 7.0, 6.9 and 7.1 minutes: an average of <strong>7.0</strong>. His huge model scores 9, 21, 12, 18 and 15: an average of <strong>15</strong>. Two lessons in one table. The average picks the winner, and the wild swing between folds is a warning sign: when scores jump around that much, the model depends heavily on which examples it happened to see. That's variance you can see with your own eyes.</p>
+
+<figure>
+<img src="/assets/img/blog/why-perfect-models-fail/ofit-cross-validation.jpg" alt="From the video: 'Five quizzes, not one exam.' Five rounds of train/check folds; medium model scores 6.8, 7.2, 7.0, 6.9, 7.1 (average 7 min); huge model 9, 21, 12, 18, 15 (average 15 min); 'Wild swing = variance'." width="1600" height="900" loading="lazy">
+<figcaption>One lucky day doesn't decide the grade.</figcaption>
+</figure>
+
+<h2>Step 6: Regularization, making complexity expensive</h2>
+
+<p>Hamza doesn't have to throw the big model away. <strong>Regularization</strong> keeps it flexible but puts a price on complexity, by changing what the model is graded on:</p>
+
+<pre>Loss = error + λ × penalty</pre>
+
+<p>The <em>loss</em> is the score training tries to minimise. The penalty grows when the weights get large, because large weights are how a model bends sharply around single points. The symbol λ (lambda) is one dial that sets how strict the penalty is.</p>
+
+<ul>
+<li><strong>L2 (Ridge)</strong> penalises squared weights. Every weight shrinks and the curve gets smoother.</li>
+<li><strong>L1 (Lasso)</strong> penalises the absolute size of weights, and pushes some of them to exactly zero, quietly deleting features that don't help.</li>
+</ul>
+
+<figure>
+<img src="/assets/img/blog/why-perfect-models-fail/ofit-regularization-post.jpg" alt="AIChainVerse infographic: Regularization. Loss = Error + λ × Penalty. L1 (Lasso): some weights hit exactly 0. L2 (Ridge): all weights shrink smoothly. Fights overfitting; L1 drops useless features; too much λ = underfit." width="1080" height="1350" loading="lazy">
+<figcaption>From our Facebook "What is…?" series: regularization puts a price tag on complexity.</figcaption>
+</figure>
+
+<p>Neural networks have a few more tools. <strong>Dropout</strong> randomly switches off some units during training, so the network can't lean on any one of them. <strong>Early stopping</strong> ends training when the error on held-out data starts to rise. <strong>Data augmentation</strong> creates realistic variations of the training examples. And more real data, which did nothing for underfitting, is often the strongest cure for overfitting.</p>
+
+<p>With regularization, Hamza's big model gets <strong>5 minutes</strong> on training and <strong>7 minutes</strong> on test. But λ is a dial, not a free lunch: turn it too far and the model gets too stiff, and he's back to underfitting. He picks λ with the same five folds.</p>
+
+<figure>
+<img src="/assets/img/blog/why-perfect-models-fail/ofit-regularization.jpg" alt="From the video: 'Make complexity expensive.' Loss = error + λ × penalty; L2 (Ridge) shrinks every weight; L1 (Lasso) some weights hit zero; 5 min training, 7 min test; a smooth curve through noisy points and a λ dial." width="1600" height="900" loading="lazy">
+<figcaption>Same big model, a smoother curve, and an honest 7 minutes.</figcaption>
+</figure>
+
+<h2>The whole journey, and the chart to remember</h2>
+
+<p>Hamza's straight line underfit, at 12 and 13 minutes. His huge model overfit, at 1 and 15. He locked away a test set, compared models with 5-fold cross-validation, added regularization to the big model and tuned λ on the same folds. Only then did he open the test set, once, for an honest final score of 7 minutes. Customers noticed.</p>
+
+<p><strong>Split the data → compare training and validation error → diagnose → fix → test once.</strong></p>
+
+<figure>
+<img src="/assets/img/blog/why-perfect-models-fail/ofit-diagnosis-chart.jpg" alt="From the video: 'The chart to remember.' Train high, test high: underfitting, add flexibility or better features. Train low, test high: overfitting, add data or regularization, or simplify. Train low, test low: ship it, and keep monitoring. Final test: 7 min." width="1600" height="900" loading="lazy">
+<figcaption>Two numbers, three diagnoses.</figcaption>
+</figure>
+
+<ul>
+<li><strong>High training error, high test error:</strong> underfitting. Add flexibility or better features.</li>
+<li><strong>Low training error, high test error:</strong> overfitting. Add data or regularization, or simplify.</li>
+<li><strong>Low training error, low test error, small gap:</strong> ship it, and keep monitoring.</li>
+</ul>
+
+<h2>Where this bites in the real world</h2>
+
+<p><strong>Google Flu Trends.</strong> Google tried to estimate flu levels from search queries. A 2014 paper in <em>Science</em> by David Lazer and colleagues described how the approach searched among 50 million search terms to fit just 1,152 data points. Some terms matched flu data by coincidence (high school basketball, for one), so the system was part flu detector and part winter detector. From August 2011 it overestimated flu prevalence in 100 of 108 weeks. The authors also blamed changes to Google's own search algorithm, so overfitting wasn't the only cause, but the lesson stands: a huge search for patterns can find ones that were never real.</p>
+
+<p><strong>Kaggle shake-ups.</strong> On the competition site Kaggle, teams see a public leaderboard during the contest, but final rankings use a hidden private test set. Teams that chase the public score can tumble when the final results appear. It's overfitting a test set, in public. Experienced competitors trust their own cross-validation instead.</p>
+
+<p><strong>Dropout.</strong> A 2014 paper by Nitish Srivastava, Geoffrey Hinton and colleagues showed that randomly dropping units during training improved neural networks across vision, speech and document classification. It became one of the standard defences against overfitting.</p>
+
+<h2>Three myths</h2>
+
+<p><strong>"99% training accuracy means the model is great."</strong> Training scores only show what the model has already seen. A model can memorise its way to a perfect score. Only held-out data tells you how it will behave.</p>
+
+<p><strong>"More data fixes everything."</strong> More data usually helps overfitting. It doesn't fix underfitting: a too-simple model stays too simple.</p>
+
+<p><strong>"Bigger models always overfit more."</strong> That's the classic picture, and it still holds for many simple models. But very large neural networks can behave differently, as you'll see at the end.</p>
+
+<h2>The honest limits</h2>
+
+<p>A good validation score only holds if new data resembles old data. If Hamza expands to Karachi, or a monsoon floods the roads, the world has changed and even a well-fitted model can fail. That's <strong>distribution shift</strong>, and no amount of regularization prevents it. Models need monitoring after launch.</p>
+
+<p><strong>Data leakage</strong> can fool you too. If information from the future or from the test set slips into training, your validation score will look wonderful and mean nothing. And when data is ordered in time, as Hamza's is, validate on later dates, not shuffled ones.</p>
+
+<p>Cross-validation also costs compute, since you train several times. That's why big deep learning projects often use a single held-out validation set instead.</p>
+
+<h2>A note from practice</h2>
+
+<p>Always start with the learning curves: plot training error and validation error as training goes on. Most diagnosis happens in that one chart.</p>
+
+<p>And when a score looks too good to be true, the first suspect isn't a brilliant model. It's leakage. I've learned to check that before celebrating.</p>
+
+<p>One more from my own research area: in federated learning, where data stays on people's devices, each device sees only a small, unusual slice of the data, so local models can overfit their own users. That's one reason averaging across many devices matters so much.</p>
+
+<h2>The frontier: double descent</h2>
+
+<p>One trend is reshaping the textbook picture. In 2017, Chiyuan Zhang and colleagues showed that standard image networks could fit completely random labels, and yet the same networks generalise well on real data. In 2019, Mikhail Belkin and colleagues described <strong>double descent</strong>: as a model grows past the point where it fits the training data exactly, test error can fall a second time. That helps explain why huge models work so well, and researchers are still working out exactly why.</p>
+
+<p>It doesn't cancel the basics. Models still overfit, and test data is still the judge. Treat double descent as the frontier, not a licence to skip validation.</p>
+
+<h2>The takeaway</h2>
+
+<ul>
+<li><strong>Underfitting:</strong> too simple, bad on training and test data.</li>
+<li><strong>Overfitting:</strong> memorised the noise, great on training data, poor on new data.</li>
+<li><strong>The gap</strong> between training and test error is your diagnosis.</li>
+<li><strong>Cross-validation</strong> chooses the model; the test set gives the final grade, and it's opened once.</li>
+<li><strong>Regularization</strong> puts a price on complexity, and λ sets that price.</li>
+</ul>
+
+<p><strong>Too simple misses the pattern. Too complex misses the future.</strong></p>
+
+<hr>
+
+<p><em>I'm Umer Majeed, an AI engineer and CTO of InfiniteZero Foundation and Balkeum Labs. Watch the <a href="https://www.youtube.com/watch?v=yO4IpvofSVA">full video version of this explainer</a> and the <a href="https://www.youtube.com/shorts/dcKjXW3A4Jc">bias–variance Short</a> on <a href="https://www.youtube.com/@AIchainVerse">AIChainVerse on YouTube</a>, and I post shorter "What is…?" explainers on <a href="https://www.facebook.com/aichainverse">Facebook</a>. If this helped, follow me here for the next one.</em></p>
+
+<p><em>Sources: Lazer et al., "The Parable of Google Flu: Traps in Big Data Analysis," Science (2014); Srivastava et al., "Dropout: A Simple Way to Prevent Neural Networks from Overfitting," JMLR (2014); Zhang et al., "Understanding Deep Learning Requires Rethinking Generalization," ICLR (2017); Belkin et al., "Reconciling Modern Machine-Learning Practice and the Classical Bias–Variance Trade-off," PNAS (2019); Nakkiran et al., "Deep Double Descent" (2019); Moritz Hardt, "Competition leaderboard overfitting" (2015).</em></p>

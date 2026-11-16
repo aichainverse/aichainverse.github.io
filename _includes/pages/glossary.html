@@ -1,0 +1,29 @@
+{%- include lang.html -%}
+{%- assign none = "" | split: "" -%}
+{%- assign terms = ldata.glossary | default: none | sort_natural: "term" -%}
+<section class="section prose-page">
+  <div class="wrap narrow">
+    <h1>{{ t.sections.glossary }}</h1>
+    {%- if terms.size > 0 %}
+    {%- assign letters = "" | split: "" -%}
+    {%- for x in terms -%}{%- assign l = x.term | slice: 0 | upcase -%}{%- unless letters contains l -%}{%- assign letters = letters | push: l -%}{%- endunless -%}{%- endfor %}
+    <nav class="az" aria-label="{{ t.jump_to_letter }}">{% for l in letters %}<a href="#letter-{{ l | downcase }}">{{ l }}</a>{% endfor %}</nav>
+    <div class="glossary">
+      {%- for l in letters %}
+      <h2 id="letter-{{ l | downcase }}">{{ l }}</h2>
+      <dl>
+        {%- for x in terms -%}
+        {%- assign tl = x.term | slice: 0 | upcase -%}
+        {%- if tl == l %}
+        <dt id="{{ x.id | default: x.term | slugify }}">{{ x.term }}</dt>
+        <dd>{{ x.definition | markdownify }}{% if x.link %}<a href="{{ x.link | relative_url }}">{{ t.learn_more }}</a>{% endif %}</dd>
+        {%- endif -%}
+        {%- endfor %}
+      </dl>
+      {%- endfor %}
+    </div>
+    {%- else %}
+    <p class="muted">{{ t.empty.glossary }}</p>
+    {%- endif %}
+  </div>
+</section>

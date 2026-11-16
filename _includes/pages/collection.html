@@ -1,0 +1,15 @@
+{%- comment -%} Card list for the guides and tutorials sections. Usage: include pages/collection.html name="guides". {%- endcomment -%}
+{%- include lang.html -%}
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>{{ t.sections[include.name] }}</h1>
+    <div class="post-list">
+      {%- assign items = site[include.name] | where: "lang", lang | sort: "date" | reverse -%}
+      {%- for post in items %}
+      {% include post-card.html post=post %}
+      {%- else %}
+      <p class="muted">{{ t.empty[include.name] }}</p>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,21 @@
+{%- comment -%}
+  Finds this page in the other language. Sets `alt_url` (falls back to the other language's home page)
+  and `alt_found`. A page matches when it has the same path under the other prefix (/blog/ and /ur/blog/),
+  or the same `ref` in its front matter (for content whose file names or dates differ).
+{%- endcomment -%}
+{%- assign other = site.data[t.other].strings -%}
+{%- assign other_base = other.base | default: "" -%}
+{%- assign alt_url = other_base | append: "/" -%}
+{%- assign alt_found = false -%}
+{%- if base == "" -%}
+  {%- assign mirror = other_base | append: page.url -%}
+{%- else -%}
+  {%- assign mirror = page.url | remove_first: base -%}
+{%- endif -%}
+{%- assign hit = site.pages | where: "url", mirror | first -%}
+{%- unless hit -%}{%- assign hit = site.documents | where: "url", mirror | first -%}{%- endunless -%}
+{%- if page.ref -%}
+  {%- unless hit -%}{%- assign hit = site.pages | where: "ref", page.ref | where: "lang", other.code | first -%}{%- endunless -%}
+  {%- unless hit -%}{%- assign hit = site.documents | where: "ref", page.ref | where: "lang", other.code | first -%}{%- endunless -%}
+{%- endif -%}
+{%- if hit and hit.lang == other.code -%}{%- assign alt_url = hit.url -%}{%- assign alt_found = true -%}{%- endif -%}

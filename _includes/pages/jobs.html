@@ -1,0 +1,22 @@
+{%- include lang.html -%}
+{% include open-jobs.html %}
+{%- assign tags = "" | split: "" -%}
+{%- for j in open_jobs -%}{%- for tag in j.tags -%}{%- unless tags contains tag -%}{%- assign tags = tags | push: tag -%}{%- endunless -%}{%- endfor -%}{%- endfor -%}
+{%- assign tags = tags | sort_natural -%}
+<section class="section prose-page">
+  <div class="wrap narrow">
+    <h1>{{ t.nav.jobs }}</h1>
+    {%- if tags.size > 0 %}
+    <div class="chips filter" role="group" aria-label="{{ t.filter_by_tag }}">
+      <button type="button" class="active" data-tag="">{{ t.all }}</button>
+      {%- for tag in tags %}<button type="button" data-tag="{{ tag | downcase | escape }}">{{ tag }}</button>{% endfor %}
+    </div>
+    {%- endif %}
+    <ul class="job-list" id="job-list">
+      {%- for j in open_jobs %}
+      {% include job-card.html job=j %}
+      {%- endfor %}
+    </ul>
+    <p class="muted" id="jobs-empty"{% if open_jobs.size > 0 %} hidden{% endif %}>{{ t.empty.jobs }}</p>
+  </div>
+</section>

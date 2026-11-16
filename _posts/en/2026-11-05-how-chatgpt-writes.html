@@ -1,0 +1,150 @@
+---
+title: "How ChatGPT Actually Writes"
+description: "Follow one sentence through a large language model, from your keyboard to the reply, in six steps."
+date: 2026-11-05 10:00:00 +0500
+image: /assets/img/blog/how-chatgpt-writes/aichainverse-youtube-llm-thumbnail-1280x720.jpg
+image_alt: "AIChainVerse cover: How ChatGPT writes. LLMs, Large Language Models. Guess, add, repeat."
+tags: ["Artificial Intelligence", "ChatGPT", "Large Language Models", "Machine Learning", "Generative AI"]
+---
+<p>Zara types one line into a chatbot: <em>"Write a short birthday wish for my cat, Mano."</em></p>
+
+<p>Less than a second later, words start appearing: <em>"Happy birthday, Mano, the fluffiest cat on the sofa!"</em></p>
+
+<p>It reads as if someone thought about it. But nobody wrote that sentence. No database holds a birthday wish for a grey cat called Mano. So where did it come from?</p>
+
+<p>The answer is a <strong>large language model</strong>, or LLM: the engine inside ChatGPT, Claude, Gemini and Llama. OpenAI said in October 2025 that ChatGPT alone had about 800 million weekly users. Yet most people couldn't say what happens between pressing Enter and seeing the first word.</p>
+
+<p>I build and fine-tune these models for a living, and the honest answer is both simpler and stranger than most people expect. Let's follow Zara's request through the machine, one step at a time.</p>
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/27ol31FrRaM" title="YouTube video" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+
+<h2>The one-sentence version</h2>
+
+<blockquote>A large language model is a very large neural network, trained on trillions of words, whose one job is to predict the next piece of text.</blockquote>
+
+<p>That's the whole trick. It sounds far too simple to produce essays, code and jokes. The surprise of the last decade is that when the network is big enough and the text varied enough, getting good at "what comes next?" forces it to pick up grammar, facts about the world, writing styles and even some step-by-step reasoning.</p>
+
+<p>Predicting the end of "The capital of France is…" takes a little geography. Predicting the next line of a working program takes a little programming. Think of it as an extremely well-read autocomplete.</p>
+
+<figure>
+<img src="/assets/img/blog/how-chatgpt-writes/llm-infographic.jpg" alt="Infographic: the tokens of 'The cat sat on the' flow into an LLM, which scores the next word: mat 62%, sofa 21%, moon 4%, then adds the word and repeats." width="1080" height="1350" loading="lazy">
+<figcaption>An LLM scores every possible next word, picks one, adds it, and repeats.</figcaption>
+</figure>
+
+<h2>Three ideas you need first</h2>
+
+<p><strong>A neural network</strong> is a program made of many simple units called neurons. Each one takes in numbers, multiplies each by a <em>weight</em> (how much that input matters), and adds them up. Stack thousands of them in layers and the network can learn patterns. It learns by guessing, checking how wrong it was, and nudging every weight slightly in the direction that would have made it less wrong.</p>
+
+<p><strong>A parameter</strong> is just one of those weights. When people say a model has 70 billion parameters, they mean 70 billion adjustable knobs. GPT-3, released by OpenAI in 2020, had 175 billion.</p>
+
+<p><strong>A probability</strong> is a number from 0% to 100% that says how likely something is. LLMs never "know" the next word. They score every option.</p>
+
+<h2>Step 1: Cut the text into tokens</h2>
+
+<p>An LLM doesn't read letters, or even whole words. It reads <strong>tokens</strong>: small pieces of text, often a whole common word, sometimes part of a word, a space or a punctuation mark. A tool called a tokenizer does the cutting, and each token has an ID number from a fixed vocabulary. Newer tokenizers have vocabularies of 100,000 tokens or more.</p>
+
+<p>OpenAI's rule of thumb for English: one token is about four characters, or three quarters of a word. 100 tokens is roughly 75 words.</p>
+
+<p>Zara's request becomes about a dozen tokens, something like:</p>
+
+<pre>Write · a · short · birthday · wish · for · my · cat · , · Man · o · .</pre>
+
+<p>Common words get one token each. A rare name like Mano may be split into pieces, because the vocabulary has no single token for it. (The exact split depends on the model; this one is illustrative.)</p>
+
+<h2>Step 2: Turn every token into a point in "meaning space"</h2>
+
+<p>A token ID is just a label. Number 4,812 isn't "closer" to <em>cat</em> than number 4,813. So the model replaces each token with an <strong>embedding</strong>: a long list of numbers, often thousands long, learned during training.</p>
+
+<p>Picture each embedding as a point in a space with thousands of directions. Training pushes similar meanings close together. <em>Cat</em>, <em>kitten</em> and <em>Mano</em> drift near each other; <em>birthday</em>, <em>party</em> and <em>cake</em> form their own neighbourhood.</p>
+
+<p>Directions in this space can even carry meaning. In Google's famous 2013 word2vec results, the vector for <em>king</em>, minus <em>man</em>, plus <em>woman</em>, landed closest to <em>queen</em>.</p>
+
+<p>The model also adds each token's <strong>position</strong>, so it knows "cat" came after "my" and not before it.</p>
+
+<h2>Step 3: Attention, where every token looks at every other token</h2>
+
+<p>This is the step that made modern chatbots possible. In 2017, a team at Google published "Attention Is All You Need", which introduced the <strong>transformer</strong>, the "T" in GPT. Its core idea is <strong>attention</strong>.</p>
+
+<p>For every token, the model asks: <em>which other tokens in this text matter for understanding me?</em> It scores every pair and blends in information from the highest-scoring ones. In "my cat, Mano", attention lets <em>Mano</em> pull in meaning from <em>cat</em>, so the model treats Mano as a cat, not as a stranger's name.</p>
+
+<p>A transformer does this many times over. It stacks dozens of <strong>layers</strong>, each one attention followed by a small neural network. GPT-3 had 96. Early layers tend to handle grammar and nearby words; later layers build longer-range meaning, such as "this is a warm, playful message about a pet". By the top layer, the last position holds a summary of everything needed to continue.</p>
+
+<h2>Step 4: Score every possible next token</h2>
+
+<p>At the end, the model gives a score to every token in its vocabulary, tens of thousands of options at once. A function called <strong>softmax</strong> turns those scores into probabilities that add up to 100%.</p>
+
+<p>Fast-forward to the moment the reply reads <em>"Happy birthday, Mano, the fluffiest cat on the"</em>. The next-token scores might look like this (illustrative numbers):</p>
+
+<ul>
+<li>sofa: 62%</li>
+<li>block: 21%</li>
+<li>planet: 4%</li>
+<li>everything else combined: 13%</li>
+</ul>
+
+<p>Notice what it is <em>not</em> doing. It isn't searching a database of birthday wishes. It's scoring what is likely to come next, based on patterns it absorbed during training.</p>
+
+<h2>Step 5: Pick one, add it, repeat</h2>
+
+<p>The model picks one token, adds it to the end of the text, and runs the whole thing again to predict the next one. This loop is called <strong>autoregressive generation</strong>, and it's why chatbot replies appear word by word: you're watching the loop run. It stops when the model produces a special end-of-text token.</p>
+
+<p>How it picks matters. Always taking the top choice gives safe, repetitive text. So most chatbots <strong>sample</strong>: they roll a weighted die, so "sofa" wins 62 times in a hundred and "block" 21 times. A setting called <strong>temperature</strong> controls how adventurous that die is. Low temperature sticks to the favourites; high temperature takes more risks. That's why the same question can get two different answers.</p>
+
+<pre>Happy → birthday → , → Mano → … → sofa → ! → [end]</pre>
+
+<h2>Step 6: Where the knowledge came from</h2>
+
+<p>None of this works until the model is trained, in two broad stages.</p>
+
+<p><strong>Pre-training.</strong> The model reads an enormous pile of text, including web pages, books, articles and code, and plays one game billions of times: hide the next token, guess it, check, and nudge every parameter slightly toward the right answer. Meta said in April 2024 that Llama 3 was pre-trained on more than 15 trillion tokens. Nobody has to label this data. The next token is always the answer key.</p>
+
+<p><strong>Fine-tuning into an assistant.</strong> A pre-trained model is a brilliant autocomplete, not a helpful assistant. Ask it a question and it might continue with three more questions. So it's fine-tuned on examples of good conversations, and then on human feedback: people compare pairs of answers, and the model is trained toward the preferred kind. This is <strong>RLHF</strong>, reinforcement learning from human feedback. In OpenAI's 2022 InstructGPT study, people preferred answers from a 1.3-billion-parameter model tuned this way over those from the 175-billion-parameter GPT-3, a model more than 100 times larger.</p>
+
+<h2>The whole journey in one line</h2>
+
+<p>Zara's sentence becomes a dozen tokens. Tokens become points in meaning space. Attention layers give every token its context. Softmax scores every possible next token. The model picks one, adds it, and repeats, until <em>"Happy birthday, Mano, the fluffiest cat on the sofa!"</em> is complete.</p>
+
+<pre>Text → tokens → embeddings → attention layers → next-token scores → pick, add, repeat → reply</pre>
+
+<h2>Three myths worth dropping</h2>
+
+<p><strong>"It looks answers up in a giant database."</strong> A plain LLM has no list of stored answers; it generates text from patterns in its parameters. Some chatbots can also search the web or read your files, but that's a separate tool bolted on.</p>
+
+<p><strong>"It reads words and letters like we do."</strong> It sees tokens. That's why models have famously stumbled on questions like "how many r's are in strawberry?": the letters are never directly in view.</p>
+
+<p><strong>"It's just autocomplete" or "It thinks like a person."</strong> Both miss the point. It really is trained only to predict the next token, but doing that at huge scale produces skills nobody programmed in, such as translation, summarising and coding. It still has no lived experience and no built-in way to check its own claims.</p>
+
+<h2>The honest limits</h2>
+
+<p>An LLM produces what <em>sounds</em> likely, not what has been checked. In June 2023, in the US case Mata v. Avianca, a federal judge fined two lawyers and their firm $5,000 for filing a brief that cited six court cases ChatGPT had invented. The cases sounded real. They didn't exist.</p>
+
+<p>Add a few more: a <strong>knowledge cutoff</strong> (it only knows its training data), a limited <strong>context window</strong> (how much text it can attend to at once), <strong>bias</strong> learned from human text, and <strong>prompt injection</strong>, where hidden instructions inside a web page or document steer a model that reads them.</p>
+
+<h2>A note from practice</h2>
+
+<p>When you fine-tune a model, for example with LoRA, a cheap method that trains a small set of extra weights instead of all of them, you're not adding a fact database. You're shifting its next-token probabilities toward the style and content of your examples. That's why fine-tuning is great for tone and format, but a poor way to teach fresh facts.</p>
+
+<p>For facts, it usually works better to fetch the right documents at question time and put them into the prompt. This is <strong>retrieval-augmented generation</strong>, or RAG. The model then predicts the next token with the evidence sitting right in front of it. Turn the temperature down for factual work, too: fewer creative leaps, fewer invented details.</p>
+
+<h2>What's next</h2>
+
+<p>These are trends, not promises:</p>
+
+<ul>
+<li><strong>Reasoning models</strong> that work through intermediate steps before answering, since OpenAI's o1 in September 2024.</li>
+<li><strong>Agents</strong> that call tools (search, code, a browser) and complete multi-step tasks.</li>
+<li><strong>Multimodal models</strong> that read images and hear audio with the same token idea.</li>
+<li><strong>Small, local models</strong> that run on a phone or laptop and keep private data on the device.</li>
+</ul>
+
+<h2>The takeaway</h2>
+
+<p>Next time a chatbot answers in seconds, you'll know the trick. Your words become tokens. Tokens become meaning. Attention adds context. And the reply is built one likely token at a time.</p>
+
+<p><strong>It doesn't look the answer up. It predicts it.</strong></p>
+
+<hr>
+
+<p><em>I'm Umer Majeed, an AI engineer and CTO of InfiniteZero Foundation and Balkeum Labs. <a href="https://www.youtube.com/watch?v=27ol31FrRaM">Watch the full video version of this explainer</a> on <a href="https://www.youtube.com/@AIchainVerse">AIChainVerse on YouTube</a>, and I post shorter explainers on <a href="https://www.facebook.com/aichainverse">Facebook</a>. If this helped, follow me here for the next one.</em></p>
+
+<p><em>Sources: Vaswani et al., "Attention Is All You Need" (2017); Brown et al., GPT-3 (2020); Ouyang et al., InstructGPT (2022); Mikolov et al., word2vec (2013); Meta, "Introducing Meta Llama 3" (2024); OpenAI Help Center, "What are tokens and how to count them"; OpenAI, "Learning to reason with LLMs" (2024); Mata v. Avianca, Inc., S.D.N.Y. (2023).</em></p>

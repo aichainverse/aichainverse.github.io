@@ -1,0 +1,149 @@
+---
+title: "How Does AI See a Photo?"
+description: "Follow one cat photo through a convolutional neural network, from 3 million numbers to \"cat, 94%\"."
+date: 2026-11-05 09:00:00 +0500
+image: /assets/img/blog/how-ai-sees-a-photo/cnn-cover.jpg
+image_alt: "How AI sees a photo: Convolutional Neural Networks. Pixels, then edges, then cat."
+tags: ["Artificial Intelligence", "Deep Learning", "Computer Vision", "Machine Learning", "Neural Networks"]
+shorts:
+  - { youtube_id: "kGSLZByNNug", title: "A Tiny Pattern Turned a Panda Into a Gibbon", image: /assets/img/blog/how-ai-sees-a-photo/aichainverse-short-cnn-01-panda-gibbon-thumbnail-1080x1920.jpg }
+  - { youtube_id: "WYGPofMBtMA", title: "3 Myths About How AI Sees Images", image: /assets/img/blog/how-ai-sees-a-photo/aichainverse-short-cnn-02-myths-thumbnail-1080x1920.jpg }
+  - { youtube_id: "GL9PSFTReTA", title: "To AI, Your Photo Is Just 3 Million Numbers", image: /assets/img/blog/how-ai-sees-a-photo/aichainverse-short-cnn-04-photo-numbers-thumbnail-1080x1920.jpg }
+  - { youtube_id: "gxjaZ-B9SzI", title: "The 2012 Contest That Started the AI Boom", image: /assets/img/blog/how-ai-sees-a-photo/aichainverse-short-cnn-03-alexnet-thumbnail-1080x1920.jpg }
+  - { youtube_id: "z39u5nzcw6k", title: "Nobody Trains Image AI From Scratch Anymore", image: /assets/img/blog/how-ai-sees-a-photo/aichainverse-short-cnn-06-transfer-learning-thumbnail-1080x1920.jpg }
+  - { youtube_id: "-sNh4hdpQ78", title: "How Your Phone Finds Your Cat in One Second", image: /assets/img/blog/how-ai-sees-a-photo/aichainverse-short-cnn-05-whole-journey-thumbnail-1080x1920.jpg }
+---
+<p>Sana types "cat" into the search bar of her phone's photo gallery. In under a second, it shows her every picture of Mano, her grey cat: Mano on the sofa, Mano in a cardboard box, Mano half-hidden behind a curtain.</p>
+
+<p>Nobody tagged those photos. The phone worked it out by itself.</p>
+
+<p>That's strange when you think about it, because to a computer a photo isn't a cat, or a sofa, or anything at all. It's a long list of numbers. So how does a machine get from millions of numbers to "this is a cat"?</p>
+
+<p>For most of the last fifteen years, the answer has been a <strong>convolutional neural network</strong>, or CNN. I work with these models as an AI engineer, and the idea behind them is one of the most elegant in the field. Let's follow Sana's photo of Mano through one, step by step.</p>
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/38hbNKltRU8" title="YouTube video" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+
+<h2>First, a photo is just numbers</h2>
+
+<p>A digital photo is a grid of tiny squares called <strong>pixels</strong>. A colour pixel stores three numbers: how much red, how much green and how much blue. Sana's photo is 1,000 pixels wide and 1,000 tall. That's a million pixels, times three colours: <strong>3 million numbers</strong>. No cat, no sofa. Just numbers.</p>
+
+<p>A <strong>neural network</strong> is a stack of simple adding machines. Each <em>neuron</em> takes numbers in, multiplies each one by a <em>weight</em> (how much that input matters), adds them up and passes the result on. The network learns by guessing, measuring how wrong it was, and nudging every weight a little toward a better guess. Many layers make it <em>deep</em>. A CNN is one kind of deep neural network, built for grids of data like images.</p>
+
+<h2>The one-sentence version</h2>
+
+<blockquote>A CNN looks at an image through small sliding windows called filters, finds simple patterns like edges first, and combines them layer by layer into bigger patterns until it can name what's in the picture.</blockquote>
+
+<p>Think of reading a page with a magnifying glass. You never see the whole page at once. You slide the glass along, notice letters, then words, then sentences, and finally the story. A CNN does the same with a photo: edges, then shapes, then parts, then the whole object.</p>
+
+<figure>
+<img src="/assets/img/blog/how-ai-sees-a-photo/cnn-infographic.jpg" alt="Infographic: a pixel-grid cat photo with a 3 by 3 filter, then edges, then shapes, then a prediction of cat 94%." width="1080" height="1350" loading="lazy">
+<figcaption><a href="https://www.facebook.com/photo.php?fbid=122121994815487843">Small filters slide over the pixels and find edges, then shapes, then the whole object.</a></figcaption>
+</figure>
+
+<h2>Step 1: Why an ordinary network chokes on photos</h2>
+
+<p>The simplest network connects every input to every neuron. With 3 million inputs and just 1,000 neurons, that's <strong>3 billion weights</strong> in a single layer: slow, data-hungry and quick to overfit.</p>
+
+<p>There's a deeper problem too. An ordinary network sees the photo as one long list, so it doesn't know which pixels are neighbours. If Mano moves a little to the left, almost every number changes, and what it learned about "an ear in the top left" doesn't help with "an ear in the top right".</p>
+
+<p>A CNN fixes both problems with two ideas: look at <strong>small local patches</strong>, and <strong>reuse the same detector everywhere</strong>.</p>
+
+<h2>Step 2: Convolution, a small filter sliding across the image</h2>
+
+<p>A <strong>filter</strong> is a tiny grid of weights, usually 3 by 3. The CNN places it on the top-left corner of the photo, multiplies the nine pixels under it by its nine weights, and adds them into one number. Then it slides one pixel to the right and repeats, row after row, across the whole picture. That sliding multiply-and-add is <strong>convolution</strong>.</p>
+
+<p>Let's do the maths once. Here's a vertical-edge filter, where every row reads the same:</p>
+
+<pre>−1   0   +1
+−1   0   +1
+−1   0   +1</pre>
+
+<p>It subtracts the left column from the right. On Mano's flat grey fur, every pixel is 100, so the answer is 0: no edge. Now put it where the dark background (0) meets the bright edge of his ear (200). Each row reads 0, 0, 200, so the result is 3 × (−0 + 0 + 200) = <strong>600</strong>: a strong edge.</p>
+
+<p>Slide that filter over the whole photo and you get a new grid called a <strong>feature map</strong>. It glows wherever the pattern appears (here, along the edges of Mano's ears and legs) and stays dark everywhere else.</p>
+
+<p>Two things make this efficient. First, <strong>weight sharing</strong>: the same filter is reused at every position, so a 3 by 3 filter on a colour image has only 27 weights (9 per colour), compared with 3 billion. Second, <strong>position doesn't matter</strong>: an edge detector finds an edge wherever it sits.</p>
+
+<h2>Step 3: Many filters, and nobody writes them</h2>
+
+<p>One filter finds one pattern, so a real layer runs dozens at once: vertical edges, horizontal edges, diagonals, colour changes. Each produces its own feature map.</p>
+
+<p>Here's the surprise. <strong>Nobody types in the filter values.</strong> They start out as random numbers. During training, the network sees thousands of labelled photos, and every wrong guess nudges the filters. Edge detectors appear by themselves, because edges turn out to be useful.</p>
+
+<p>After each filter, a simple rule called <strong>ReLU</strong> keeps the positive numbers and turns the negative ones into zero, so the strong "pattern found here" signals survive and the rest drop away.</p>
+
+<h2>Step 4: Pooling, shrinking the map but keeping the evidence</h2>
+
+<p>Those feature maps are still almost as big as the photo, so the network shrinks them. <strong>Max pooling</strong> splits a map into 2 by 2 blocks and keeps only the biggest number in each.</p>
+
+<p>On Mano's ear, one block reads 600, 0, 450 and 30, so pooling keeps <strong>600</strong>. The map becomes a quarter of the size, and it still says "a strong edge was here". As a bonus, if Mano shifts by a pixel or two, the biggest number in the block usually stays the same.</p>
+
+<h2>Step 5: Stacking layers, from edges to ears to a cat</h2>
+
+<p>A CNN repeats <strong>convolution → ReLU → pooling</strong> again and again. Each new layer looks at the maps from the layer before, not at the raw photo, so it builds on what came earlier:</p>
+
+<ul>
+<li><strong>Early layers</strong> find edges and colour blobs, like the outline of Mano's ear.</li>
+<li><strong>Middle layers</strong> combine edges into textures and shapes: fur, curves, round eyes.</li>
+<li><strong>Deep layers</strong> combine those into parts and objects: ears plus whiskers plus eyes start to look like a cat face.</li>
+</ul>
+
+<p>And because every map is smaller than the last, a tiny filter deep in the network covers a large part of the original photo. When Zeiler and Fergus visualised what trained networks respond to (2013), they found exactly this progression: edges first, then parts, then objects.</p>
+
+<h2>Step 6: Making the call</h2>
+
+<p>At the end, the final small maps are flattened into one list and passed to ordinary <strong>fully connected</strong> layers, with one output per category. A function called <strong>softmax</strong> turns those outputs into probabilities that add up to 100%.</p>
+
+<p>For Sana's photo: <strong>cat 94%, dog 4%, rabbit 1%, other 1%</strong>. The gallery files it under "cat", and Mano shows up in her search.</p>
+
+<p>During training, if it had said "dog", the error would flow backwards through every layer (this is called <strong>backpropagation</strong>), nudging the deep filters and even the early edge detectors so the next guess is a little better.</p>
+
+<h2>The whole journey in one line</h2>
+
+<p>Three million numbers come in. Filters find edges. Pooling shrinks the maps. Layers build edges into shapes, and shapes into a cat. Softmax says "cat, 94%", and every filter along the way was learned from examples, not written by hand.</p>
+
+<pre>pixels → filters find edges → pooling shrinks → layers build parts → cat 94%</pre>
+
+<h2>Where CNNs came from, and where they are now</h2>
+
+<p><strong>Reading cheques.</strong> In 1998, Yann LeCun and colleagues at AT&amp;T Bell Labs published LeNet-5, a CNN that read handwritten digits. Systems built on that work read the handwritten amounts on millions of bank cheques.</p>
+
+<p><strong>The 2012 moment.</strong> ImageNet is a challenge with about 1.2 million training photos in 1,000 categories. In 2012, AlexNet, a CNN trained on two gaming graphics cards, missed the right answer in its top five guesses 15.3% of the time. The next-best entry missed 26.2%. That gap kicked off the deep learning boom.</p>
+
+<p><strong>Much deeper.</strong> In 2015, ResNet added "skip connections" and trained networks 152 layers deep, reaching a 3.57% top-5 error. Skip connections are now in almost every deep network, including the transformers behind chatbots.</p>
+
+<p><strong>Everywhere.</strong> CNNs screen retina photos for diabetic eye disease (a 2016 study in JAMA found accuracy comparable to eye doctors on its test sets). Small CNNs such as Google's MobileNet run right on your phone, so photos like Sana's never have to leave it. And a CNN design called the U-Net sits inside early diffusion image generators such as Stable Diffusion, removing noise step by step.</p>
+
+<h2>Three myths worth dropping</h2>
+
+<p><strong>"Programmers tell it what an ear looks like."</strong> No. Every filter starts random and is learned from labelled examples.</p>
+
+<p><strong>"It sees the way we do."</strong> Not quite. Show a standard CNN a cat shape covered in elephant-skin texture, and it usually says "elephant" (Geirhos and colleagues, 2019). It leans on texture more than shape.</p>
+
+<p><strong>"Transformers made CNNs obsolete."</strong> No. Vision Transformers are strong, especially with huge datasets, but a modernised pure CNN called ConvNeXt (2022) matched them on ImageNet, and CNNs still run most phone cameras, medical imaging and real-time video. Many new systems mix both.</p>
+
+<h2>The honest limits</h2>
+
+<p><strong>Easy to fool.</strong> Researchers added a nearly invisible pattern to a photo of a panda, and a CNN said "gibbon" with 99.3% confidence (Goodfellow and colleagues, 2014). These <em>adversarial examples</em> matter for anything safety-critical, like self-driving cars.</p>
+
+<p><strong>Shortcut learning.</strong> A CNN learns whatever separates the labels, even the wrong thing. If every cow in training stands on grass, it may learn "green background means cow" and fail on a cow at the beach.</p>
+
+<p><strong>Data and bias.</strong> Training from scratch needs a lot of labelled images, and whatever is rare in that data, such as certain faces, skin tones or places, the model will be worse at.</p>
+
+<h2>A note from practice</h2>
+
+<p>Almost nobody trains a CNN from scratch any more. The usual move is <strong>transfer learning</strong>: take a CNN already trained on millions of general photos, keep its early layers (edges and textures are useful for almost any image task), and retrain only the last few layers on your own few hundred or few thousand labelled images. It's the fastest way to get a strong model from a small dataset.</p>
+
+<p>The second habit worth building is checking <em>where</em> the model is looking. Tools such as Grad-CAM paint a heat map over the image showing which pixels drove the decision. If the heat map for "cat" lights up the sofa instead of Mano, the model has learned a shortcut, and the accuracy number alone would never have told you.</p>
+
+<h2>The takeaway</h2>
+
+<p>Next time your phone finds your cat in a second, you'll know the trick. Small filters slide across the photo. Edges become shapes, shapes become a cat.</p>
+
+<p><strong>And nobody told it what a cat looks like. It learned to see.</strong></p>
+
+<hr>
+
+<p><em>I'm Umer Majeed, an AI engineer and CTO of InfiniteZero Foundation and Balkeum Labs. <a href="https://www.youtube.com/watch?v=38hbNKltRU8">Watch the full video version of this explainer</a> on <a href="https://www.youtube.com/@AIchainVerse">AIChainVerse on YouTube</a>, and I post shorter explainers on <a href="https://www.facebook.com/aichainverse">Facebook</a>. Next on Medium: how ChatGPT actually writes. Follow me here so you don't miss it.</em></p>
+
+<p><em>Sources: LeCun et al., "Gradient-Based Learning Applied to Document Recognition" (1998); Krizhevsky, Sutskever and Hinton, AlexNet (2012); He et al., ResNet (2015); Zeiler and Fergus, "Visualizing and Understanding Convolutional Networks" (2013); Geirhos et al., "ImageNet-trained CNNs are biased towards texture" (2019); Goodfellow, Shlens and Szegedy, "Explaining and Harnessing Adversarial Examples" (2014); Gulshan et al., JAMA (2016); Howard et al., MobileNets (2017); Ronneberger et al., U-Net (2015); Liu et al., "A ConvNet for the 2020s" (2022); Selvaraju et al., Grad-CAM (2016).</em></p>

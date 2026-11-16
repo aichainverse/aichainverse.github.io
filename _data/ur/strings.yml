@@ -1,0 +1,78 @@
+# Urdu interface text. Same keys as _data/en/strings.yml.
+code: ur
+name: اردو
+dir: rtl
+base: /ur
+other: en
+# tagline: Urdu tagline for the home page (falls back to `tagline` in _config.yml while unset)
+# Month names, January to December; dates are written "5 نومبر 2026".
+months: [جنوری, فروری, مارچ, اپریل, مئی, جون, جولائی, اگست, ستمبر, اکتوبر, نومبر, دسمبر]
+
+nav:
+  videos: ویڈیوز
+  learn: سیکھیں
+  jobs: نوکریاں
+  blog: بلاگ
+  about: تعارف
+sections:
+  guides: گائیڈز
+  tutorials: ٹیوٹوریلز
+  career: کیریئر
+  glossary: اصطلاحات
+  resources: وسائل
+  shorts: شارٹس
+units:
+  guides: [گائیڈ, گائیڈز]
+  tutorials: [ٹیوٹوریل, ٹیوٹوریلز]
+  career: [رول, رولز]
+  glossary: [اصطلاح, اصطلاحات]
+  resources: [لنک, لنکس]
+
+skip: مواد پر جائیں
+home: ہوم
+read: پڑھیں ←
+min_read: منٹ کا مطالعہ
+updated: اپ ڈیٹ
+prerequisites: پیشگی تقاضے
+on_this_page: اس صفحے پر
+previous: → پچھلا
+next: اگلا ←
+watch_on_youtube: یوٹیوب پر دیکھیں ←
+sources: ذرائع
+learn_next: آگے کیا سیکھیں
+learn_more: مزید جانیں ←
+created_by: تخلیق کار
+other_category: دیگر
+copy: کاپی
+copied: کاپی ہو گیا
+
+latest_video: تازہ ترین ویڈیو
+all_videos: تمام ویڈیوز ←
+latest_learn: تازہ ترین گائیڈز اور ٹیوٹوریلز
+learn_link: سیکھیں ←
+latest_posts: تازہ ترین تحریریں
+blog_link: بلاگ ←
+open_jobs: دستیاب نوکریاں
+all_jobs: تمام نوکریاں ←
+
+remote: ریموٹ
+posted: شائع شدہ
+all: سب
+filter_by_tag: ٹیگ کے مطابق فلٹر کریں
+jump_to_letter: حرف پر جائیں
+tiktok: ٹک ٹاک
+youtube_shorts: یوٹیوب شارٹس
+
+empty:
+  videos: ابھی کوئی ویڈیو نہیں۔
+  guides: ابھی کوئی گائیڈ نہیں۔
+  tutorials: ابھی کوئی ٹیوٹوریل نہیں۔
+  career: ابھی کوئی کیریئر گائیڈ نہیں۔
+  glossary: ابھی کوئی اصطلاح نہیں۔
+  resources: ابھی کوئی وسائل نہیں۔
+  shorts: ابھی کوئی شارٹس نہیں۔
+  blog: ابھی کوئی تحریر نہیں۔
+  jobs: فی الحال کوئی نوکری دستیاب نہیں۔
+
+not_found: صفحہ نہیں ملا
+back_home: ہوم پر واپس جائیں

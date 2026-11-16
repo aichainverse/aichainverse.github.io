@@ -1,5 +1,7 @@
+{%- include lang.html -%}
+{%- include alt.html -%}
 <!doctype html>
-<html lang="{{ site.lang | default: 'en' }}">
+<html lang="{{ lang }}" dir="{{ t.dir | default: 'ltr' }}" data-copy="{{ t.copy | escape }}" data-copied="{{ t.copied | escape }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,8 +10,12 @@
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600{% if lang == 'ur' %}&family=Noto+Nastaliq+Urdu:wght@400;600;700{% endif %}&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  {%- if alt_found %}
+  <link rel="alternate" hreflang="{{ lang }}" href="{{ page.url | absolute_url }}">
+  <link rel="alternate" hreflang="{{ other.code }}" href="{{ alt_url | absolute_url }}">
+  {%- endif %}
   {% seo %}
   {% feed_meta %}
 </head>

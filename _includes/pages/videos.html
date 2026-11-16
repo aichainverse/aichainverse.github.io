@@ -1,0 +1,14 @@
+{%- include lang.html -%}
+<section class="section prose-page">
+  <div class="wrap">
+    <h1>{{ t.nav.videos }}</h1>
+    <div class="video-grid">
+      {%- assign videos = site.videos | where: "lang", lang | sort: "date" | reverse -%}
+      {%- for v in videos %}
+      {% include video-card.html video=v %}
+      {%- else %}
+      <p class="muted">{{ t.empty.videos }}</p>
+      {%- endfor %}
+    </div>
+  </div>
+</section>

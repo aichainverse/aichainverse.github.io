@@ -32,16 +32,20 @@
 // Copy buttons on code blocks.
 (function () {
   if (!navigator.clipboard) return;
+  // Button labels come from the page's language (set on <html> by the default layout).
+  var labels = document.documentElement.dataset;
+  var copyText = labels.copy || "Copy";
+  var copiedText = labels.copied || "Copied";
   document.querySelectorAll(".prose div.highlighter-rouge, .prose figure.highlight").forEach(function (block) {
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "copy-btn";
-    btn.textContent = "Copy";
+    btn.textContent = copyText;
     btn.addEventListener("click", function () {
       var code = block.querySelector("pre code") || block.querySelector("pre");
       navigator.clipboard.writeText(code.innerText).then(function () {
-        btn.textContent = "Copied";
-        setTimeout(function () { btn.textContent = "Copy"; }, 1500);
+        btn.textContent = copiedText;
+        setTimeout(function () { btn.textContent = copyText; }, 1500);
       });
     });
     block.appendChild(btn);
